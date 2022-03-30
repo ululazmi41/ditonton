@@ -3,12 +3,10 @@ import 'package:core/presentation/widgets/movie_card_list.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:search/presentation/bloc/search_bloc.dart';
 
-import '../provider/movie_search_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class SearchPage extends StatelessWidget {
-  static const ROUTE_NAME = '/search';
+  static const routeName = '/search';
 
   const SearchPage({Key? key}) : super(key: key);
 
@@ -52,7 +50,7 @@ class SearchPage extends StatelessWidget {
                       padding: const EdgeInsets.all(8),
                       itemBuilder: (context, index) {
                         final movie = result[index];
-                        return MovieCard(movie);
+                        return MovieCard(movie: movie);
                       },
                       itemCount: result.length,
                     ),

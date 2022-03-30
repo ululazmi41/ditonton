@@ -37,7 +37,7 @@ void main() {
   final tTv = Tv(
     firstAirDate: DateTime.parse("2000-01-01"),
     backdropPath: '/muth4OYamXf41G2evdrLEg8d3om.jpg',
-    genreIds: [14, 28],
+    genreIds: const [14, 28],
     id: 557,
     overview:
         'After being bitten by a genetically altered spider, nerdy high school student Peter Parker is endowed with amazing powers to become the Amazing superhero known as Spider-Man.',
@@ -46,7 +46,7 @@ void main() {
     name: 'Spider-Man',
     voteAverage: 7.2,
     voteCount: 13507,
-    originCountry: ["US"],
+    originCountry: const ["US"],
     originalLanguage: "EN",
     originalName: "Spider-Man",
   );
@@ -54,7 +54,7 @@ void main() {
 
   group('now playing tvs', () {
     test('initialState should be Empty', () {
-      expect(provider.onTheAirState, equals(RequestState.Empty));
+      expect(provider.onTheAirState, equals(RequestState.empty));
     });
 
     test('should get data from the usecase', () async {
@@ -74,7 +74,7 @@ void main() {
       // act
       provider.fetchOnTheAirTvs();
       // assert
-      expect(provider.onTheAirState, RequestState.Loading);
+      expect(provider.onTheAirState, RequestState.loading);
     });
 
     test('should change tvs when data is gotten successfully', () async {
@@ -84,7 +84,7 @@ void main() {
       // act
       await provider.fetchOnTheAirTvs();
       // assert
-      expect(provider.onTheAirState, RequestState.Loaded);
+      expect(provider.onTheAirState, RequestState.loaded);
       expect(provider.onTheAirTvs, tTvList);
       expect(listenerCallCount, 2);
     });
@@ -92,11 +92,11 @@ void main() {
     test('should return error when data is unsuccessful', () async {
       // arrange
       when(mockGetOnTheAirTvs.execute())
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       // act
       await provider.fetchOnTheAirTvs();
       // assert
-      expect(provider.onTheAirState, RequestState.Error);
+      expect(provider.onTheAirState, RequestState.error);
       expect(provider.message, 'Server Failure');
       expect(listenerCallCount, 2);
     });
@@ -109,8 +109,8 @@ void main() {
       // act
       provider.fetchPopularTvs();
       // assert
-      expect(provider.popularTvsState, RequestState.Loading);
-      // verify(provider.setState(RequestState.Loading));
+      expect(provider.popularTvsState, RequestState.loading);
+      // verify(provider.setState(RequestState.loading));
     });
 
     test('should change tvs data when data is gotten successfully', () async {
@@ -119,7 +119,7 @@ void main() {
       // act
       await provider.fetchPopularTvs();
       // assert
-      expect(provider.popularTvsState, RequestState.Loaded);
+      expect(provider.popularTvsState, RequestState.loaded);
       expect(provider.popularTvs, tTvList);
       expect(listenerCallCount, 2);
     });
@@ -127,11 +127,11 @@ void main() {
     test('should return error when data is unsuccessful', () async {
       // arrange
       when(mockGetPopularTvs.execute())
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       // act
       await provider.fetchPopularTvs();
       // assert
-      expect(provider.popularTvsState, RequestState.Error);
+      expect(provider.popularTvsState, RequestState.error);
       expect(provider.message, 'Server Failure');
       expect(listenerCallCount, 2);
     });
@@ -145,7 +145,7 @@ void main() {
       // act
       provider.fetchTopRatedTvs();
       // assert
-      expect(provider.topRatedTvsState, RequestState.Loading);
+      expect(provider.topRatedTvsState, RequestState.loading);
     });
 
     test('should change tvs data when data is gotten successfully', () async {
@@ -155,7 +155,7 @@ void main() {
       // act
       await provider.fetchTopRatedTvs();
       // assert
-      expect(provider.topRatedTvsState, RequestState.Loaded);
+      expect(provider.topRatedTvsState, RequestState.loaded);
       expect(provider.topRatedTvs, tTvList);
       expect(listenerCallCount, 2);
     });
@@ -163,11 +163,11 @@ void main() {
     test('should return error when data is unsuccessful', () async {
       // arrange
       when(mockGetTopRatedTvs.execute())
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       // act
       await provider.fetchTopRatedTvs();
       // assert
-      expect(provider.topRatedTvsState, RequestState.Error);
+      expect(provider.topRatedTvsState, RequestState.error);
       expect(provider.message, 'Server Failure');
       expect(listenerCallCount, 2);
     });

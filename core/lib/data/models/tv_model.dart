@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/tv.dart';
 
 class TvModel extends Equatable {
-  TvModel({
+  const TvModel({
     required this.backdropPath,
     required this.firstAirDate,
     required this.genreIds,
@@ -34,8 +34,7 @@ class TvModel extends Equatable {
   final int voteCount;
 
   factory TvModel.fromJson(Map<String, dynamic> json) => TvModel(
-        backdropPath:
-            json["backdrop_path"] == null ? null : json["backdrop_path"],
+        backdropPath: json["backdrop_path"],
         firstAirDate:
             json["first_air_date"] == null || json["first_air_date"] == ""
                 ? DateTime.parse("2000-01-01")
@@ -48,7 +47,7 @@ class TvModel extends Equatable {
         originalName: json["original_name"],
         overview: json["overview"],
         popularity: json["popularity"].toDouble(),
-        posterPath: json["poster_path"] == null ? null : json["poster_path"],
+        posterPath: json["poster_path"],
         voteAverage: json["vote_average"].toDouble(),
         voteCount: json["vote_count"],
       );
@@ -72,19 +71,19 @@ class TvModel extends Equatable {
 
   Tv toEntity() {
     return Tv(
-      backdropPath: this.backdropPath,
-      firstAirDate: this.firstAirDate,
-      genreIds: this.genreIds,
-      id: this.id,
-      name: this.name,
-      originCountry: this.originCountry,
-      originalLanguage: this.originalLanguage,
-      originalName: this.originalName,
-      overview: this.overview,
-      popularity: this.popularity,
-      posterPath: this.posterPath,
-      voteAverage: this.voteAverage,
-      voteCount: this.voteCount,
+      backdropPath: backdropPath,
+      firstAirDate: firstAirDate,
+      genreIds: genreIds,
+      id: id,
+      name: name,
+      originCountry: originCountry,
+      originalLanguage: originalLanguage,
+      originalName: originalName,
+      overview: overview,
+      popularity: popularity,
+      posterPath: posterPath,
+      voteAverage: voteAverage,
+      voteCount: voteCount,
     );
   }
 

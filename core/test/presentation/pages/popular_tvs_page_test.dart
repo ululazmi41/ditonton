@@ -31,12 +31,12 @@ void main() {
 
   testWidgets('Page should display center progress bar when loading',
       (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.Loading);
+    when(mockNotifier.state).thenReturn(RequestState.loading);
 
     final progressBarFinder = find.byType(CircularProgressIndicator);
     final centerFinder = find.byType(Center);
 
-    await tester.pumpWidget(_makeTestableWidget(PopularTvsPage()));
+    await tester.pumpWidget(_makeTestableWidget(const PopularTvsPage()));
 
     expect(centerFinder, findsOneWidget);
     expect(progressBarFinder, findsOneWidget);
@@ -44,13 +44,13 @@ void main() {
 
   testWidgets('Page should display ListView when data is loaded',
       (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.Loaded);
+    when(mockNotifier.state).thenReturn(RequestState.loaded);
     when(mockNotifier.tvs).thenReturn(<Tv>[testTv]);
 
     final listViewFinder = find.byType(ListView);
     final tvCardFinder = find.byType(TvCard);
 
-    await tester.pumpWidget(_makeTestableWidget(PopularTvsPage()));
+    await tester.pumpWidget(_makeTestableWidget(const PopularTvsPage()));
 
     expect(listViewFinder, findsOneWidget);
     expect(tvCardFinder, findsOneWidget);
@@ -58,12 +58,12 @@ void main() {
 
   testWidgets('Page should display text with message when Error',
       (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.Error);
+    when(mockNotifier.state).thenReturn(RequestState.error);
     when(mockNotifier.message).thenReturn('Error message');
 
-    final textFinder = find.byKey(Key('error_message'));
+    final textFinder = find.byKey(const Key('error_message'));
 
-    await tester.pumpWidget(_makeTestableWidget(PopularTvsPage()));
+    await tester.pumpWidget(_makeTestableWidget(const PopularTvsPage()));
 
     expect(textFinder, findsOneWidget);
   });

@@ -6,13 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SearchTvPage extends StatelessWidget {
-  static const ROUTE_NAME = '/search_tv';
+  static const routeName = '/search_tv';
+
+  const SearchTvPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search'),
+        title: const Text('Search'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -24,32 +26,32 @@ class SearchTvPage extends StatelessWidget {
                 Provider.of<TvSearchNotifier>(context, listen: false)
                     .fetchTvSearch(query);
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Search title',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
               ),
               textInputAction: TextInputAction.search,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
               'Search Result',
               style: kHeading6,
             ),
             Consumer<TvSearchNotifier>(
               builder: (context, data, child) {
-                if (data.state == RequestState.Loading) {
-                  return Center(
+                if (data.state == RequestState.loading) {
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (data.state == RequestState.Loaded) {
+                } else if (data.state == RequestState.loaded) {
                   final result = data.searchResult;
                   return Expanded(
                     child: ListView.builder(
                       padding: const EdgeInsets.all(8),
                       itemBuilder: (context, index) {
                         final tv = data.searchResult[index];
-                        return TvCard(tv);
+                        return TvCard(tv: tv);
                       },
                       itemCount: result.length,
                     ),

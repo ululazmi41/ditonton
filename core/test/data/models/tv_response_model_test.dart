@@ -10,10 +10,10 @@ void main() {
   final tTvModel = TvModel(
     backdropPath: "/4g5gK5eGWZg8swIZl6eX2AoJp8S.jpg",
     firstAirDate: DateTime.parse("2003-10-21"),
-    genreIds: [18],
+    genreIds: const [18],
     id: 11250,
     name: "Pasión de gavilanes",
-    originCountry: ["CO"],
+    originCountry: const ["CO"],
     originalLanguage: "es",
     originalName: "Pasión de gavilanes",
     overview:

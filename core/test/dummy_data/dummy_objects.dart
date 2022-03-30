@@ -7,7 +7,7 @@ import 'package:core/data/models/tv_table.dart';
 import 'package:core/domain/entities/tv.dart';
 import 'package:core/domain/entities/tv_detail.dart';
 
-final testMovieCache = MovieTable(
+const testMovieCache = MovieTable(
   id: 557,
   overview:
       'After being bitten by a genetically altered spider, nerdy high school student Peter Parker is endowed with amazing powers to become the Amazing superhero known as Spider-Man.',
@@ -26,7 +26,7 @@ final testMovieFromCache = Movie.watchlist(
 final testMovie = Movie(
   adult: false,
   backdropPath: '/muth4OYamXf41G2evdrLEg8d3om.jpg',
-  genreIds: [14, 28],
+  genreIds: const [14, 28],
   id: 557,
   originalTitle: 'Spider-Man',
   overview:
@@ -42,7 +42,7 @@ final testMovie = Movie(
 
 final testMovieList = [testMovie];
 
-final testMovieDetail = MovieDetail(
+const testMovieDetail = MovieDetail(
   adult: false,
   backdropPath: 'backdropPath',
   genres: [Genre(id: 1, name: 'Action')],
@@ -64,7 +64,7 @@ final testWatchlistMovie = Movie.watchlist(
   overview: 'overview',
 );
 
-final testMovieTable = MovieTable(
+const testMovieTable = MovieTable(
   id: 1,
   title: 'title',
   posterPath: 'posterPath',
@@ -78,7 +78,7 @@ final testMovieMap = {
   'title': 'title',
 };
 
-final testTvCache = TvTable(
+const testTvCache = TvTable(
   id: 557,
   overview:
       'After being bitten by a genetically altered spider, nerdy high school student Peter Parker is endowed with amazing powers to become the Amazing superhero known as Spider-Man.',
@@ -97,7 +97,7 @@ final testTvFromCache = Tv.watchlist(
 final testTv = Tv(
   firstAirDate: DateTime.parse("2000-01-01"),
   backdropPath: '/muth4OYamXf41G2evdrLEg8d3om.jpg',
-  genreIds: [14, 28],
+  genreIds: const [14, 28],
   id: 557,
   overview:
       'After being bitten by a genetically altered spider, nerdy high school student Peter Parker is endowed with amazing powers to become the Amazing superhero known as Spider-Man.',
@@ -106,7 +106,7 @@ final testTv = Tv(
   name: 'Spider-Man',
   voteAverage: 7.2,
   voteCount: 13507,
-  originCountry: ["US"],
+  originCountry: const ["US"],
   originalLanguage: "EN",
   originalName: "Spider-Man",
 );
@@ -117,7 +117,7 @@ final testTvDetail = TvDetail(
   name: 'title',
   adult: false,
   backdropPath: "test",
-  createdBy: [
+  createdBy: const [
     {
       "id": 1238142,
       "creditId": "5d29d20ebe4b36756aa15541",
@@ -126,17 +126,17 @@ final testTvDetail = TvDetail(
       "profilePath": null
     }
   ],
-  episodeRunTime: [1],
+  episodeRunTime: const [1],
   firstAirDate: DateTime.parse("2000-01-01"),
-  genres: [
+  genres: const [
     Genre(id: 1, name: "test"),
   ],
   homepage: "test",
   id: 1,
   inProduction: true,
-  languages: ["EN"],
+  languages: const ["EN"],
   lastAirDate: DateTime.parse("2000-01-02"),
-  nextEpisodeToAir: {
+  nextEpisodeToAir: const {
     "air_date": "2022-03-23",
     "episode_number": 27,
     "id": 3602819,
@@ -152,11 +152,11 @@ final testTvDetail = TvDetail(
   numberOfSeasons: 1,
   posterPath: 'posterPath',
   overview: 'overview',
-  originCountry: ["US"],
+  originCountry: const ["US"],
   originalLanguage: "EN",
   originalName: "Test",
   popularity: 1.1,
-  productionCompanies: [],
+  productionCompanies: const [],
   status: "finished",
   tagline: "test",
   type: "Scripted",
@@ -171,7 +171,7 @@ final testWatchlistTv = Tv.watchlist(
   overview: 'overview',
 );
 
-final testTvTable = TvTable(
+const testTvTable = TvTable(
   id: 1,
   name: 'title',
   posterPath: 'posterPath',

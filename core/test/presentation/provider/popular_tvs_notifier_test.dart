@@ -28,7 +28,7 @@ void main() {
   final tTv = Tv(
     firstAirDate: DateTime.parse("2000-01-01"),
     backdropPath: '/muth4OYamXf41G2evdrLEg8d3om.jpg',
-    genreIds: [14, 28],
+    genreIds: const [14, 28],
     id: 557,
     overview:
         'After being bitten by a genetically altered spider, nerdy high school student Peter Parker is endowed with amazing powers to become the Amazing superhero known as Spider-Man.',
@@ -37,7 +37,7 @@ void main() {
     name: 'Spider-Man',
     voteAverage: 7.2,
     voteCount: 13507,
-    originCountry: ["US"],
+    originCountry: const ["US"],
     originalLanguage: "EN",
     originalName: "Spider-Man",
   );
@@ -50,7 +50,7 @@ void main() {
     // act
     notifier.fetchPopularTvs();
     // assert
-    expect(notifier.state, RequestState.Loading);
+    expect(notifier.state, RequestState.loading);
     expect(listenerCallCount, 1);
   });
 
@@ -60,7 +60,7 @@ void main() {
     // act
     await notifier.fetchPopularTvs();
     // assert
-    expect(notifier.state, RequestState.Loaded);
+    expect(notifier.state, RequestState.loaded);
     expect(notifier.tvs, tTvList);
     expect(listenerCallCount, 2);
   });
@@ -68,11 +68,11 @@ void main() {
   test('should return error when data is unsuccessful', () async {
     // arrange
     when(mockGetPopularTvs.execute())
-        .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+        .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
     // act
     await notifier.fetchPopularTvs();
     // assert
-    expect(notifier.state, RequestState.Error);
+    expect(notifier.state, RequestState.error);
     expect(notifier.message, 'Server Failure');
     expect(listenerCallCount, 2);
   });

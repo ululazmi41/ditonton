@@ -49,12 +49,12 @@ void main() {
       });
   });
 
-  final tId = 1;
+  const tId = 1;
 
   final tTv = Tv(
     firstAirDate: DateTime.parse("2000-01-01"),
     backdropPath: '/muth4OYamXf41G2evdrLEg8d3om.jpg',
-    genreIds: [14, 28],
+    genreIds: const [14, 28],
     id: 557,
     overview:
         'After being bitten by a genetically altered spider, nerdy high school student Peter Parker is endowed with amazing powers to become the Amazing superhero known as Spider-Man.',
@@ -63,7 +63,7 @@ void main() {
     name: 'Spider-Man',
     voteAverage: 7.2,
     voteCount: 13507,
-    originCountry: ["US"],
+    originCountry: const ["US"],
     originalLanguage: "EN",
     originalName: "Spider-Man",
   );
@@ -93,7 +93,7 @@ void main() {
       // act
       provider.fetchTvDetail(tId);
       // assert
-      expect(provider.tvState, RequestState.Loading);
+      expect(provider.tvState, RequestState.loading);
       expect(listenerCallCount, 1);
     });
 
@@ -103,7 +103,7 @@ void main() {
       // act
       await provider.fetchTvDetail(tId);
       // assert
-      expect(provider.tvState, RequestState.Loaded);
+      expect(provider.tvState, RequestState.loaded);
       expect(provider.tv, testTvDetail);
       expect(listenerCallCount, 3);
     });
@@ -115,7 +115,7 @@ void main() {
       // act
       await provider.fetchTvDetail(tId);
       // assert
-      expect(provider.tvState, RequestState.Loaded);
+      expect(provider.tvState, RequestState.loaded);
       expect(provider.tvRecommendations, tTvs);
     });
   });
@@ -138,7 +138,7 @@ void main() {
       // act
       await provider.fetchTvDetail(tId);
       // assert
-      expect(provider.recommendationState, RequestState.Loaded);
+      expect(provider.recommendationState, RequestState.loaded);
       expect(provider.tvRecommendations, tTvs);
     });
 
@@ -147,11 +147,11 @@ void main() {
       when(mockGetTvDetail.execute(tId))
           .thenAnswer((_) async => Right(testTvDetail));
       when(mockGetTvRecommendations.execute(tId))
-          .thenAnswer((_) async => Left(ServerFailure('Failed')));
+          .thenAnswer((_) async => const Left(ServerFailure('Failed')));
       // act
       await provider.fetchTvDetail(tId);
       // assert
-      expect(provider.recommendationState, RequestState.Error);
+      expect(provider.recommendationState, RequestState.error);
       expect(provider.message, 'Failed');
     });
   });
@@ -169,7 +169,7 @@ void main() {
     test('should execute save watchlist when function called', () async {
       // arrange
       when(mockSaveWatchlist.execute(testTvDetail))
-          .thenAnswer((_) async => Right('Success'));
+          .thenAnswer((_) async => const Right('Success'));
       when(mockGetWatchlistStatus.execute(testTvDetail.id))
           .thenAnswer((_) async => true);
       // act
@@ -181,7 +181,7 @@ void main() {
     test('should execute remove watchlist when function called', () async {
       // arrange
       when(mockRemoveWatchlist.execute(testTvDetail))
-          .thenAnswer((_) async => Right('Removed'));
+          .thenAnswer((_) async => const Right('Removed'));
       when(mockGetWatchlistStatus.execute(testTvDetail.id))
           .thenAnswer((_) async => false);
       // act
@@ -193,7 +193,7 @@ void main() {
     test('should update watchlist status when add watchlist success', () async {
       // arrange
       when(mockSaveWatchlist.execute(testTvDetail))
-          .thenAnswer((_) async => Right('Added to Watchlist'));
+          .thenAnswer((_) async => const Right('Added to Watchlist'));
       when(mockGetWatchlistStatus.execute(testTvDetail.id))
           .thenAnswer((_) async => true);
       // act
@@ -208,7 +208,7 @@ void main() {
     test('should update watchlist message when add watchlist failed', () async {
       // arrange
       when(mockSaveWatchlist.execute(testTvDetail))
-          .thenAnswer((_) async => Left(DatabaseFailure('Failed')));
+          .thenAnswer((_) async => const Left(DatabaseFailure('Failed')));
       when(mockGetWatchlistStatus.execute(testTvDetail.id))
           .thenAnswer((_) async => false);
       // act
@@ -224,7 +224,8 @@ void main() {
         () async {
       // arrange
       when(mockRemoveWatchlist.execute(testTvDetail)).thenAnswer(
-          (realInvocation) async => Left(DatabaseFailure("fail testing")));
+          (realInvocation) async =>
+              const Left(DatabaseFailure("fail testing")));
       when(mockGetWatchlistStatus.execute(testTvDetail.id))
           .thenAnswer((_) async => false);
 
@@ -238,13 +239,13 @@ void main() {
     test('should return error when data is unsuccessful', () async {
       // arrange
       when(mockGetTvDetail.execute(tId))
-          .thenAnswer((_) async => Left(ServerFailure('Server Failure')));
+          .thenAnswer((_) async => const Left(ServerFailure('Server Failure')));
       when(mockGetTvRecommendations.execute(tId))
           .thenAnswer((_) async => Right(tTvs));
       // act
       await provider.fetchTvDetail(tId);
       // assert
-      expect(provider.tvState, RequestState.Error);
+      expect(provider.tvState, RequestState.error);
       expect(provider.message, 'Server Failure');
       expect(listenerCallCount, 2);
     });

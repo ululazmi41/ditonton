@@ -8,9 +8,7 @@ import 'package:flutter/material.dart';
 class CustomDrawer extends StatefulWidget {
   final Widget content;
 
-  CustomDrawer({
-    required this.content,
-  });
+  const CustomDrawer({Key? key, required this.content}) : super(key: key);
 
   @override
   State<CustomDrawer> createState() => _CustomDrawerState();
@@ -27,64 +25,62 @@ class _CustomDrawerState extends State<CustomDrawer>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 250),
     );
   }
 
   Widget _buildDrawer() {
-    return Container(
-      child: Column(
-        children: [
-          UserAccountsDrawerHeader(
-            currentAccountPicture: CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'https://raw.githubusercontent.com/dicodingacademy/assets/main/flutter_expert_academy/dicoding-icon.png'),
-            ),
-            accountName: Text("Ulul Azmi"),
-            accountEmail: Text("ululazmi4bs@gmail.com"),
+    return Column(
+      children: [
+        const UserAccountsDrawerHeader(
+          currentAccountPicture: CircleAvatar(
+            backgroundImage: NetworkImage(
+                'https://raw.githubusercontent.com/dicodingacademy/assets/main/flutter_expert_academy/dicoding-icon.png'),
           ),
-          ListTile(
-            leading: Icon(Icons.movie),
-            title: Text("Movies"),
-            onTap: () => setState(() {
-              toggle();
-              currentPage = HomeMoviePage();
-            }),
-          ),
-          ListTile(
-            leading: Icon(Icons.tv),
-            title: Text("TV Series"),
-            onTap: () => setState(() {
-              toggle();
-              currentPage = HomeTvPage();
-            }),
-          ),
-          ListTile(
-            leading: Icon(Icons.save_alt),
-            title: Text("Watchlist Movies"),
-            onTap: () => setState(() {
-              toggle();
-              currentPage = WatchlistMoviesPage();
-            }),
-          ),
-          ListTile(
-            leading: Icon(Icons.save_alt),
-            title: Text("Watchlist Tvs"),
-            onTap: () => setState(() {
-              toggle();
-              currentPage = WatchlistTvsPage();
-            }),
-          ),
-          ListTile(
-            onTap: () {
-              Navigator.pushNamed(context, ABOUT_ROUTE);
-              _animationController.reverse();
-            },
-            leading: Icon(Icons.info_outline),
-            title: Text('About'),
-          ),
-        ],
-      ),
+          accountName: Text("Ulul Azmi"),
+          accountEmail: Text("ululazmi4bs@gmail.com"),
+        ),
+        ListTile(
+          leading: const Icon(Icons.movie),
+          title: const Text("Movies"),
+          onTap: () => setState(() {
+            toggle();
+            currentPage = const HomeMoviePage();
+          }),
+        ),
+        ListTile(
+          leading: const Icon(Icons.tv),
+          title: const Text("TV Series"),
+          onTap: () => setState(() {
+            toggle();
+            currentPage = const HomeTvPage();
+          }),
+        ),
+        ListTile(
+          leading: const Icon(Icons.save_alt),
+          title: const Text("Watchlist Movies"),
+          onTap: () => setState(() {
+            toggle();
+            currentPage = const WatchlistMoviesPage();
+          }),
+        ),
+        ListTile(
+          leading: const Icon(Icons.save_alt),
+          title: const Text("Watchlist Tvs"),
+          onTap: () => setState(() {
+            toggle();
+            currentPage = const WatchlistTvsPage();
+          }),
+        ),
+        ListTile(
+          onTap: () {
+            Navigator.pushNamed(context, aboutRoute);
+            _animationController.reverse();
+          },
+          leading: const Icon(Icons.info_outline),
+          title: const Text('About'),
+        ),
+      ],
     );
   }
 

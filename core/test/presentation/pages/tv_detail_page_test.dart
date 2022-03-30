@@ -33,12 +33,12 @@ void main() {
     testWidgets('Circular progress bar should display when tv is loading',
         (WidgetTester tester) async {
       // arrange
-      when(mockNotifier.tvState).thenReturn(RequestState.Loading);
+      when(mockNotifier.tvState).thenReturn(RequestState.loading);
 
       // action
       final circular = find.byType(CircularProgressIndicator);
 
-      await tester.pumpWidget(_makeTestableWidget(TvDetailPage(id: 1)));
+      await tester.pumpWidget(_makeTestableWidget(const TvDetailPage(id: 1)));
 
       // assert
       expect(circular, findsOneWidget);
@@ -47,14 +47,14 @@ void main() {
     testWidgets("Should show error message when state is failed",
         (WidgetTester tester) async {
       // arrange
-      when(mockNotifier.tvState).thenReturn(RequestState.Error);
+      when(mockNotifier.tvState).thenReturn(RequestState.error);
       when(mockNotifier.message).thenReturn("Error Testing");
 
       // act
       final errorType = find.byType(Text);
       final errorText = find.text("Error Testing");
 
-      await tester.pumpWidget(_makeTestableWidget(TvDetailPage(id: 1)));
+      await tester.pumpWidget(_makeTestableWidget(const TvDetailPage(id: 1)));
 
       // assert
       expect(errorType, findsOneWidget);
@@ -64,7 +64,7 @@ void main() {
 
   group('recommendation state', () {
     setUp(() {
-      when(mockNotifier.tvState).thenReturn(RequestState.Loaded);
+      when(mockNotifier.tvState).thenReturn(RequestState.loaded);
       when(mockNotifier.tv).thenReturn(testTvDetail);
       when(mockNotifier.tvRecommendations).thenReturn([testTv]);
       when(mockNotifier.isAddedToWatchlist).thenReturn(false);
@@ -74,11 +74,11 @@ void main() {
         'Circular progress bar should display when recommendation state is loading',
         (WidgetTester tester) async {
       // arrange
-      when(mockNotifier.recommendationState).thenReturn(RequestState.Loading);
+      when(mockNotifier.recommendationState).thenReturn(RequestState.loading);
 
       // act
       final circular = find.byType(CircularProgressIndicator);
-      await tester.pumpWidget(_makeTestableWidget(TvDetailPage(id: 1)));
+      await tester.pumpWidget(_makeTestableWidget(const TvDetailPage(id: 1)));
 
       // assert
       expect(circular, findsWidgets);
@@ -88,14 +88,14 @@ void main() {
         'Error message should display when recommendation state is Error',
         (WidgetTester tester) async {
       // arrange
-      when(mockNotifier.recommendationState).thenReturn(RequestState.Error);
+      when(mockNotifier.recommendationState).thenReturn(RequestState.error);
       when(mockNotifier.message).thenReturn("Error testing");
 
       // act
       final errorType = find.byType(Text);
       final errorMessage = find.text("Error testing");
 
-      await tester.pumpWidget(_makeTestableWidget(TvDetailPage(id: 1)));
+      await tester.pumpWidget(_makeTestableWidget(const TvDetailPage(id: 1)));
 
       // assert
       expect(errorType, findsWidgets);
@@ -105,12 +105,12 @@ void main() {
     testWidgets('Widgets should display when recommendation state is Loaded',
         (WidgetTester tester) async {
       // arrange
-      when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+      when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
 
       // act
       final cachedNetworkImage = find.byType(CachedNetworkImage);
 
-      await tester.pumpWidget(_makeTestableWidget(TvDetailPage(id: 1)));
+      await tester.pumpWidget(_makeTestableWidget(const TvDetailPage(id: 1)));
 
       // assert
       expect(cachedNetworkImage, findsWidgets);
@@ -120,15 +120,15 @@ void main() {
   testWidgets(
       'Watchlist button should display add icon when tv not added to watchlist',
       (WidgetTester tester) async {
-    when(mockNotifier.tvState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.tvState).thenReturn(RequestState.loaded);
     when(mockNotifier.tv).thenReturn(testTvDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
     when(mockNotifier.tvRecommendations).thenReturn(<Tv>[]);
     when(mockNotifier.isAddedToWatchlist).thenReturn(false);
 
     final watchlistButtonIcon = find.byIcon(Icons.add);
 
-    await tester.pumpWidget(_makeTestableWidget(TvDetailPage(id: 1)));
+    await tester.pumpWidget(_makeTestableWidget(const TvDetailPage(id: 1)));
 
     expect(watchlistButtonIcon, findsOneWidget);
   });
@@ -136,15 +136,15 @@ void main() {
   testWidgets(
       'Watchlist button should dispay check icon when tv is added to wathclist',
       (WidgetTester tester) async {
-    when(mockNotifier.tvState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.tvState).thenReturn(RequestState.loaded);
     when(mockNotifier.tv).thenReturn(testTvDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
     when(mockNotifier.tvRecommendations).thenReturn(<Tv>[]);
     when(mockNotifier.isAddedToWatchlist).thenReturn(true);
 
     final watchlistButtonIcon = find.byIcon(Icons.check);
 
-    await tester.pumpWidget(_makeTestableWidget(TvDetailPage(id: 1)));
+    await tester.pumpWidget(_makeTestableWidget(const TvDetailPage(id: 1)));
 
     expect(watchlistButtonIcon, findsOneWidget);
   });
@@ -152,16 +152,16 @@ void main() {
   testWidgets(
       'Watchlist button should display Snackbar when added to watchlist',
       (WidgetTester tester) async {
-    when(mockNotifier.tvState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.tvState).thenReturn(RequestState.loaded);
     when(mockNotifier.tv).thenReturn(testTvDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
     when(mockNotifier.tvRecommendations).thenReturn(<Tv>[]);
     when(mockNotifier.isAddedToWatchlist).thenReturn(false);
     when(mockNotifier.watchlistMessage).thenReturn('Added to Watchlist');
 
     final watchlistButton = find.byType(ElevatedButton);
 
-    await tester.pumpWidget(_makeTestableWidget(TvDetailPage(id: 1)));
+    await tester.pumpWidget(_makeTestableWidget(const TvDetailPage(id: 1)));
 
     expect(find.byIcon(Icons.add), findsOneWidget);
 
@@ -175,16 +175,16 @@ void main() {
   testWidgets(
       'Watchlist button should display AlertDialog when add to watchlist failed',
       (WidgetTester tester) async {
-    when(mockNotifier.tvState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.tvState).thenReturn(RequestState.loaded);
     when(mockNotifier.tv).thenReturn(testTvDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.recommendationState).thenReturn(RequestState.loaded);
     when(mockNotifier.tvRecommendations).thenReturn(<Tv>[]);
     when(mockNotifier.isAddedToWatchlist).thenReturn(false);
     when(mockNotifier.watchlistMessage).thenReturn('Failed');
 
     final watchlistButton = find.byType(ElevatedButton);
 
-    await tester.pumpWidget(_makeTestableWidget(TvDetailPage(id: 1)));
+    await tester.pumpWidget(_makeTestableWidget(const TvDetailPage(id: 1)));
 
     expect(find.byIcon(Icons.add), findsOneWidget);
 

@@ -43,7 +43,7 @@ void main() {
     name: 'title',
     adult: false,
     backdropPath: "test",
-    createdBy: [
+    createdBy: const [
       {
         "id": 1238142,
         "creditId": "5d29d20ebe4b36756aa15541",
@@ -52,17 +52,17 @@ void main() {
         "profilePath": null
       }
     ],
-    episodeRunTime: [1],
+    episodeRunTime: const [1],
     firstAirDate: DateTime.parse("2000-01-01"),
-    genres: [
+    genres: const [
       GenreModel(id: 1, name: "test"),
     ],
     homepage: "test",
     id: 1,
     inProduction: true,
-    languages: ["EN"],
+    languages: const ["EN"],
     lastAirDate: DateTime.parse("2000-01-02"),
-    nextEpisodeToAir: {
+    nextEpisodeToAir: const {
       "air_date": "2022-03-23",
       "episode_number": 27,
       "id": 3602819,
@@ -78,11 +78,11 @@ void main() {
     numberOfSeasons: 1,
     posterPath: 'posterPath',
     overview: 'overview',
-    originCountry: ["US"],
+    originCountry: const ["US"],
     originalLanguage: "EN",
     originalName: "Test",
     popularity: 1.1,
-    productionCompanies: [],
+    productionCompanies: const [],
     status: "finished",
     tagline: "test",
     type: "Scripted",

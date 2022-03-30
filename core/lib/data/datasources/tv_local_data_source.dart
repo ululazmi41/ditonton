@@ -25,7 +25,7 @@ class TvLocalDataSourceImpl implements TvLocalDataSource {
   @override
   Future<List<TvTable>> getCachedNowPlayingTvs() async {
     final result = await databaseHelper.getCacheTvs('now playing');
-    if (result.length > 0) {
+    if (result.isNotEmpty) {
       return result.map((data) => TvTable.fromMap(data)).toList();
     } else {
       throw CacheException("Can't get the data :(");
@@ -55,7 +55,6 @@ class TvLocalDataSourceImpl implements TvLocalDataSource {
   @override
   Future<TvTable?> getTvById(int id) async {
     final result = await databaseHelper.getTvById(id);
-    print('b: $result');
     if (result != null) {
       return TvTable.fromMap(result);
     } else {

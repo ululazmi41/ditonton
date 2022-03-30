@@ -102,7 +102,8 @@ class DatabaseHelper {
   }
 
   void _onCreate(Database db, int version) async {
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE  $_tblWatchlist (
         id INTEGER PRIMARY KEY,
         title TEXT,
@@ -111,7 +112,8 @@ class DatabaseHelper {
       );
     ''');
 
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE  $_tblTvWatchlist (
         id INTEGER PRIMARY KEY,
         name TEXT,
@@ -120,7 +122,8 @@ class DatabaseHelper {
       );m
     ''');
 
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE  $_tblCache (
         id INTEGER PRIMARY KEY,
         title TEXT,
@@ -130,7 +133,8 @@ class DatabaseHelper {
       );
     ''');
 
-    await db.execute('''
+    await db.execute(
+        '''
       CREATE TABLE  $_tblTvCache (
         id INTEGER PRIMARY KEY,
         Name TEXT,

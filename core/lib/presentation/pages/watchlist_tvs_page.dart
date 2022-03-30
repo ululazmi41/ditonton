@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class WatchlistTvsPage extends StatefulWidget {
-  static const ROUTE_NAME = '/watchlist-tv';
+  static const routeName = '/watchlist-tv';
+
+  const WatchlistTvsPage({Key? key}) : super(key: key);
 
   @override
   _WatchlistTvsPageState createState() => _WatchlistTvsPageState();
@@ -27,6 +29,7 @@ class _WatchlistTvsPageState extends State<WatchlistTvsPage> with RouteAware {
     routeObserver.subscribe(this, ModalRoute.of(context)!);
   }
 
+  @override
   void didPopNext() {
     Provider.of<WatchlistTvNotifier>(context, listen: false)
         .fetchWatchlistTvs();
@@ -36,22 +39,22 @@ class _WatchlistTvsPageState extends State<WatchlistTvsPage> with RouteAware {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Watchlist Tv Series'),
+        title: const Text('Watchlist Tv Series'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Consumer<WatchlistTvNotifier>(
           builder: (context, data, child) {
-            if (data.watchlistState == RequestState.Loading) {
-              return Center(
+            if (data.watchlistState == RequestState.loading) {
+              return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.watchlistState == RequestState.Loaded) {
-              if (data.watchlistTvs.length > 0) {
+            } else if (data.watchlistState == RequestState.loaded) {
+              if (data.watchlistTvs.isNotEmpty) {
                 return ListView.builder(
                   itemBuilder: (context, index) {
                     final tv = data.watchlistTvs[index];
-                    return TvCard(tv);
+                    return TvCard(tv: tv);
                   },
                   itemCount: data.watchlistTvs.length,
                 );
@@ -61,7 +64,7 @@ class _WatchlistTvsPageState extends State<WatchlistTvsPage> with RouteAware {
                   children: [
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
+                      children: const <Widget>[
                         Icon(Icons.tv),
                         Text("Belum ada"),
                       ],
@@ -71,7 +74,7 @@ class _WatchlistTvsPageState extends State<WatchlistTvsPage> with RouteAware {
               }
             } else {
               return Center(
-                key: Key('error_message'),
+                key: const Key('error_message'),
                 child: Text(data.message),
               );
             }
