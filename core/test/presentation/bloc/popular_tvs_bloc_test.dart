@@ -48,8 +48,8 @@ void main() {
     },
     act: (bloc) => bloc.add(FetchPopularTvs()),
     expect: () => [
-      FetchLoading(),
-      FetchEmpty(),
+      PopularTvsLoading(),
+      PopularTvsEmpty(),
     ],
     verify: (bloc) => {
       verify(mockGetPopularTvs.execute()),
@@ -64,8 +64,8 @@ void main() {
     },
     act: (bloc) => bloc.add(FetchPopularTvs()),
     expect: () => [
-      FetchLoading(),
-      FetchLoaded(tTvList),
+      PopularTvsLoading(),
+      PopularTvsLoaded(tTvList),
     ],
     verify: (bloc) => {
       verify(mockGetPopularTvs.execute()),
@@ -81,8 +81,8 @@ void main() {
     },
     act: (bloc) => bloc.add(FetchPopularTvs()),
     expect: () => [
-      FetchLoading(),
-      const FetchError('Server Failure'),
+      PopularTvsLoading(),
+      const PopularTvsError('Server Failure'),
     ],
   );
 }

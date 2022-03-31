@@ -47,8 +47,8 @@ void main() {
     },
     act: (bloc) => bloc.add(FetchPopularMovies()),
     expect: () => [
-      FetchLoading(),
-      FetchEmpty(),
+      PopularMoviesLoading(),
+      PopularMoviesEmpty(),
     ],
   );
 
@@ -61,8 +61,8 @@ void main() {
     },
     act: (bloc) => bloc.add(FetchPopularMovies()),
     expect: () => [
-      FetchLoading(),
-      FetchLoaded(tMovieList),
+      PopularMoviesLoading(),
+      PopularMoviesLoaded(tMovieList),
     ],
   );
 
@@ -75,8 +75,8 @@ void main() {
     },
     act: (bloc) => bloc.add(FetchPopularMovies()),
     expect: () => [
-      FetchLoading(),
-      const FetchError('Server Failure'),
+      PopularMoviesLoading(),
+      const PopularMoviesError('Server Failure'),
     ],
   );
 }

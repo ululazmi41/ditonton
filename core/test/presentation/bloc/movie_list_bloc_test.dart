@@ -57,7 +57,7 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchNowPlayingMovies()),
       expect: () => [
-        FetchLoading(),
+        MovieListLoading(),
         MovieListEmpty(),
       ],
     );
@@ -71,8 +71,8 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchNowPlayingMovies()),
       expect: () => [
-        FetchLoading(),
-        FetchLoaded(tMovieList),
+        MovieListLoading(),
+        MovieListLoaded(tMovieList),
       ],
       verify: (bloc) {
         verify(mockGetNowPlayingMovies.execute());
@@ -88,68 +88,8 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchNowPlayingMovies()),
       expect: () => [
-        FetchLoading(),
-        const FetchError('Server Failure'),
-      ],
-    );
-  });
-
-  group('popular movies', () {
-    blocTest<MovieListBloc, MovieListState>(
-      "should change state to loading and return List<Movie> when usecase is called",
-      build: () {
-        when(mockGetPopularMovies.execute())
-            .thenAnswer((_) async => Right(tMovieList));
-        return movieListBloc;
-      },
-      act: (bloc) => bloc.add(FetchPopularMovies()),
-      expect: () => [
-        FetchPopularLoading(),
-        FetchPopularLoaded(tMovieList),
-      ],
-    );
-
-    blocTest<MovieListBloc, MovieListState>(
-      "should return error when data is unsuccessful",
-      build: () {
-        when(mockGetPopularMovies.execute()).thenAnswer(
-            (_) async => const Left(ServerFailure('Server Failure')));
-        return movieListBloc;
-      },
-      act: (bloc) => bloc.add(FetchPopularMovies()),
-      expect: () => [
-        FetchPopularLoading(),
-        const FetchPopularError('Server Failure'),
-      ],
-    );
-  });
-
-  group('top rated movies', () {
-    blocTest<MovieListBloc, MovieListState>(
-      "should change state to loading and return List<Movie> when usecase is called",
-      build: () {
-        when(mockGetTopRatedMovies.execute())
-            .thenAnswer((_) async => Right(tMovieList));
-        return movieListBloc;
-      },
-      act: (bloc) => bloc.add(FetchTopRatedMovies()),
-      expect: () => [
-        FetchTopRatedLoading(),
-        FetchTopRatedLoaded(tMovieList),
-      ],
-    );
-
-    blocTest<MovieListBloc, MovieListState>(
-      "should return error when data is unsuccessful",
-      build: () {
-        when(mockGetTopRatedMovies.execute()).thenAnswer(
-            (_) async => const Left(ServerFailure('Server Failure')));
-        return movieListBloc;
-      },
-      act: (bloc) => bloc.add(FetchTopRatedMovies()),
-      expect: () => [
-        FetchTopRatedLoading(),
-        const FetchTopRatedError('Server Failure'),
+        MovieListLoading(),
+        const MovieListError('Server Failure'),
       ],
     );
   });

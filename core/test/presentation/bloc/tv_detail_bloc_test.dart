@@ -65,7 +65,7 @@ void main() {
   );
   final tTvs = <Tv>[tTv];
 
-  group('Get detail and recommendations', () {
+  group('Detail', () {
     blocTest<TvDetailBloc, TvDetailState>(
       "should Loading and return data and recommendations when usecase is called",
       build: () {
@@ -73,23 +73,23 @@ void main() {
             .thenAnswer((_) async => Right(testTvDetail));
         when(mockGetTvRecommendations.execute(tId))
             .thenAnswer((_) async => Right(tTvs));
+        when(mockGetWatchlistTvStatus.execute(tId))
+            .thenAnswer((_) async => true);
         return tvDetailBloc;
       },
       act: (bloc) => bloc.add(const FetchTvDetail(tId)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        FetchLoading(),
-        FetchLoaded(testTvDetail),
-        FetchRecommendationLoaded(tTvs),
+        TvDetailLoading(),
+        TvDetailLoaded(testTvDetail, true, tTvs),
       ],
       verify: (bloc) {
         verify(bloc.getTvDetail.execute(tId));
         verify(bloc.getTvRecommendations.execute(tId));
+        verify(bloc.getWatchListStatus.execute(tId));
       },
     );
-  });
 
-  group('get error', () {
     blocTest<TvDetailBloc, TvDetailState>(
       "should return error on detail when Failure is thrown",
       build: () {
@@ -97,13 +97,15 @@ void main() {
             .thenAnswer((_) async => const Left(ServerFailure('Failed')));
         when(mockGetTvRecommendations.execute(tId))
             .thenAnswer((_) async => Right(tTvs));
+        when(mockGetWatchlistTvStatus.execute(tId))
+            .thenAnswer((_) async => false);
         return tvDetailBloc;
       },
       act: (bloc) => bloc.add(const FetchTvDetail(tId)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        FetchLoading(),
-        const FetchError('Failed'),
+        TvDetailLoading(),
+        const TvDetailError('Failed'),
       ],
       verify: (bloc) {
         verify(bloc.getTvDetail.execute(tId));
@@ -112,24 +114,26 @@ void main() {
     );
 
     blocTest<TvDetailBloc, TvDetailState>(
-      "should return error on recommendations when Failure is thrown",
+      "should return error on recommendations when request is unsuccessful on recommendations",
       build: () {
         when(mockGetTvDetail.execute(tId))
             .thenAnswer((_) async => Right(testTvDetail));
         when(mockGetTvRecommendations.execute(tId))
-            .thenAnswer((_) async => const Left(ServerFailure('Failed')));
+            .thenAnswer((_) async => Left(ServerFailure('Failed')));
+        when(mockGetWatchlistTvStatus.execute(tId))
+            .thenAnswer((_) async => false);
         return tvDetailBloc;
       },
       act: (bloc) => bloc.add(const FetchTvDetail(tId)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        FetchLoading(),
-        FetchLoaded(testTvDetail),
-        const FetchRecommendationError('Failed'),
+        TvDetailLoading(),
+        TvDetailErrorRecommendation(testTvDetail, false, 'Failed'),
       ],
       verify: (bloc) {
         verify(bloc.getTvDetail.execute(tId));
         verify(bloc.getTvRecommendations.execute(tId));
+        verify(bloc.getWatchListStatus.execute(tId));
       },
     );
   });
@@ -232,24 +236,58 @@ void main() {
     );
   });
 
-  group('Others : Error', () {
+  group('recommendations', () {
     blocTest<TvDetailBloc, TvDetailState>(
-      'should return error when fetching detail data is unsuccessful',
+      'should return empty data when request is successful',
       build: () {
-        when(mockGetTvDetail.execute(tId))
-            .thenAnswer((_) async => const Left(ServerFailure('Failed')));
+        when(mockGetTvRecommendations.execute(tId))
+            .thenAnswer((_) async => Right([]));
+        return tvDetailBloc;
+      },
+      act: (bloc) => bloc.add(const FetchRecommendations(tId)),
+      wait: const Duration(milliseconds: 500),
+      expect: () => [
+        TvDetailRecommendationLoading(),
+        TvDetailRecommendationLoaded([]),
+      ],
+      verify: (bloc) {
+        verify(bloc.getTvRecommendations.execute(tId));
+      },
+    );
+
+    blocTest<TvDetailBloc, TvDetailState>(
+      'should return data when request is successful',
+      build: () {
         when(mockGetTvRecommendations.execute(tId))
             .thenAnswer((_) async => Right(testTvList));
         return tvDetailBloc;
       },
-      act: (bloc) => bloc.add(const FetchTvDetail(tId)),
+      act: (bloc) => bloc.add(const FetchRecommendations(tId)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        FetchLoading(),
-        const FetchError('Failed'),
+        TvDetailRecommendationLoading(),
+        TvDetailRecommendationLoaded(testTvList),
       ],
       verify: (bloc) {
-        verify(bloc.getTvDetail.execute(tId));
+        verify(bloc.getTvRecommendations.execute(tId));
+      },
+    );
+
+    blocTest<TvDetailBloc, TvDetailState>(
+      'should return error when request is unsuccessful',
+      build: () {
+        when(mockGetTvRecommendations.execute(tId))
+            .thenAnswer((_) async => Left(ServerFailure('Failed')));
+        return tvDetailBloc;
+      },
+      act: (bloc) => bloc.add(const FetchRecommendations(tId)),
+      wait: const Duration(milliseconds: 500),
+      expect: () => [
+        TvDetailRecommendationLoading(),
+        const TvDetailRecommendationError('Failed'),
+      ],
+      verify: (bloc) {
+        verify(bloc.getTvRecommendations.execute(tId));
       },
     );
   });

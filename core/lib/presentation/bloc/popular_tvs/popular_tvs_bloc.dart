@@ -9,21 +9,21 @@ part 'popular_tvs_state.dart';
 class PopularTvsBloc extends Bloc<PopularTvsEvent, PopularTvsState> {
   final GetPopularTvs getPopularTvs;
 
-  PopularTvsBloc(this.getPopularTvs) : super(FetchEmpty()) {
+  PopularTvsBloc(this.getPopularTvs) : super(PopularTvsEmpty()) {
     on<FetchPopularTvs>((event, emit) async {
-      emit(FetchLoading());
+      emit(PopularTvsLoading());
 
       final result = await getPopularTvs.execute();
 
       result.fold(
         (failure) {
-          emit(FetchError(failure.message));
+          emit(PopularTvsError(failure.message));
         },
         (tvs) {
           if (tvs.isNotEmpty) {
-            emit(FetchLoaded(tvs));
+            emit(PopularTvsLoaded(tvs));
           } else {
-            emit(FetchEmpty());
+            emit(PopularTvsEmpty());
           }
         },
       );

@@ -8,7 +8,3 @@ abstract class TvListEvent extends Equatable {
 }
 
 class FetchNowPlayingTvs extends TvListEvent {}
-
-class FetchPopularTvs extends TvListEvent {}
-
-class FetchTopRatedTvs extends TvListEvent {}

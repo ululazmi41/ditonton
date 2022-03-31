@@ -7,67 +7,23 @@ abstract class TvListState extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchEmpty extends TvListState {}
+class TvListEmpty extends TvListState {}
 
-class FetchLoading extends TvListState {}
+class TvListLoading extends TvListState {}
 
-class FetchError extends TvListState {
+class TvListError extends TvListState {
   final String message;
 
-  const FetchError(this.message);
+  const TvListError(this.message);
 
   @override
   List<Object> get props => [message];
 }
 
-class FetchLoaded extends TvListState {
+class TvListLoaded extends TvListState {
   final List<Tv> tvs;
 
-  const FetchLoaded(this.tvs);
-
-  @override
-  List<Object> get props => [tvs];
-}
-
-class FetchPopularLoading extends TvListState {}
-
-class FetchPopularEmpty extends TvListState {}
-
-class FetchPopularError extends TvListState {
-  final String message;
-
-  const FetchPopularError(this.message);
-
-  @override
-  List<Object> get props => [message];
-}
-
-class FetchPopularLoaded extends TvListState {
-  final List<Tv> tvs;
-
-  const FetchPopularLoaded(this.tvs);
-
-  @override
-  List<Object> get props => [tvs];
-}
-
-class FetchTopRatedLoading extends TvListState {}
-
-class FetchTopRatedEmpty extends TvListState {}
-
-class FetchTopRatedError extends TvListState {
-  final String message;
-
-  const FetchTopRatedError(this.message);
-
-  @override
-  List<Object> get props => [message];
-}
-
-class FetchTopRatedLoaded extends TvListState {
-  final List<Tv> tvs;
-
-  const FetchTopRatedLoaded(this.tvs);
+  const TvListLoaded(this.tvs);
 
   @override
   List<Object> get props => [tvs];

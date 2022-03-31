@@ -12,12 +12,15 @@ class MovieDetailLoading extends MovieDetailState {}
 class MovieDetailEmpty extends MovieDetailState {}
 
 class MovieDetailLoaded extends MovieDetailState {
-  final MovieDetail result;
+  final MovieDetail movie;
+  final bool isAddedtoWatchlist;
+  final List<Movie> recommendations;
 
-  const MovieDetailLoaded(this.result);
+  const MovieDetailLoaded(
+      this.movie, this.isAddedtoWatchlist, this.recommendations);
 
   @override
-  List<Object> get props => [result];
+  List<Object> get props => [movie, isAddedtoWatchlist, recommendations];
 }
 
 class MovieDetailError extends MovieDetailState {
@@ -29,6 +32,10 @@ class MovieDetailError extends MovieDetailState {
   List<Object> get props => [message];
 }
 
+class MovieDetailRecommendationLoading extends MovieDetailState {}
+
+class MovieDetailRecommendationEmpty extends MovieDetailState {}
+
 class MovieDetailRecommendationError extends MovieDetailState {
   final String message;
 
@@ -39,28 +46,22 @@ class MovieDetailRecommendationError extends MovieDetailState {
 }
 
 class MovieDetailRecommendationLoaded extends MovieDetailState {
-  final List<Movie> movies;
+  final List<Movie> recommendations;
 
-  const MovieDetailRecommendationLoaded(this.movies);
+  const MovieDetailRecommendationLoaded(this.recommendations);
 
   @override
-  List<Object> get props => [movies];
+  List<Object> get props => [recommendations];
 }
 
-class AddWatchlistMessage extends MovieDetailState {
+class MovieDetailErrorRecommendation extends MovieDetailState {
+  final MovieDetail movie;
+  final bool isAddedtoWatchlist;
   final String message;
 
-  const AddWatchlistMessage(this.message);
+  const MovieDetailErrorRecommendation(
+      this.movie, this.isAddedtoWatchlist, this.message);
 
   @override
-  List<Object> get props => [message];
-}
-
-class IsAddedToWatchlist extends MovieDetailState {
-  final bool isAddedToWatchlist;
-
-  const IsAddedToWatchlist(this.isAddedToWatchlist);
-
-  @override
-  List<Object> get props => [isAddedToWatchlist];
+  List<Object> get props => [movie, isAddedtoWatchlist, message];
 }

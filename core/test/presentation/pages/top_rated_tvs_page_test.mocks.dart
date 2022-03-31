@@ -2,13 +2,12 @@
 // in core/test/presentation/pages/top_rated_tvs_page_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i6;
-import 'dart:ui' as _i7;
+import 'dart:async' as _i4;
 
-import 'package:core/domain/entities/tv.dart' as _i5;
 import 'package:core/domain/usecases/get_top_rated_tvs.dart' as _i2;
-import 'package:core/presentation/provider/top_rated_tvs_notifier.dart' as _i3;
-import 'package:core/utils/state_enum.dart' as _i4;
+import 'package:core/presentation/bloc/top_rated_tvs/top_rated_tvs_bloc.dart'
+    as _i3;
+import 'package:flutter_bloc/flutter_bloc.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -23,12 +22,14 @@ import 'package:mockito/mockito.dart' as _i1;
 
 class _FakeGetTopRatedTvs_0 extends _i1.Fake implements _i2.GetTopRatedTvs {}
 
-/// A class which mocks [TopRatedTvsNotifier].
+class _FakeTopRatedTvsState_1 extends _i1.Fake implements _i3.TopRatedTvsState {
+}
+
+/// A class which mocks [TopRatedTvsBloc].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockTopRatedTvsNotifier extends _i1.Mock
-    implements _i3.TopRatedTvsNotifier {
-  MockTopRatedTvsNotifier() {
+class MockTopRatedTvsBloc extends _i1.Mock implements _i3.TopRatedTvsBloc {
+  MockTopRatedTvsBloc() {
     _i1.throwOnMissingStub(this);
   }
 
@@ -37,38 +38,57 @@ class MockTopRatedTvsNotifier extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#getTopRatedTvs),
           returnValue: _FakeGetTopRatedTvs_0()) as _i2.GetTopRatedTvs);
   @override
-  _i4.RequestState get state => (super.noSuchMethod(Invocation.getter(#state),
-      returnValue: _i4.RequestState.empty) as _i4.RequestState);
+  _i3.TopRatedTvsState get state =>
+      (super.noSuchMethod(Invocation.getter(#state),
+          returnValue: _FakeTopRatedTvsState_1()) as _i3.TopRatedTvsState);
   @override
-  List<_i5.Tv> get tvs =>
-      (super.noSuchMethod(Invocation.getter(#tvs), returnValue: <_i5.Tv>[])
-          as List<_i5.Tv>);
+  _i4.Stream<_i3.TopRatedTvsState> get stream =>
+      (super.noSuchMethod(Invocation.getter(#stream),
+              returnValue: Stream<_i3.TopRatedTvsState>.empty())
+          as _i4.Stream<_i3.TopRatedTvsState>);
   @override
-  String get message =>
-      (super.noSuchMethod(Invocation.getter(#message), returnValue: '')
-          as String);
-  @override
-  bool get hasListeners =>
-      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
           as bool);
   @override
-  _i6.Future<void> fetchTopRatedTvs() =>
-      (super.noSuchMethod(Invocation.method(#fetchTopRatedTvs, []),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i6.Future<void>);
-  @override
-  void addListener(_i7.VoidCallback? listener) =>
-      super.noSuchMethod(Invocation.method(#addListener, [listener]),
+  void add(_i3.TopRatedTvsEvent? event) =>
+      super.noSuchMethod(Invocation.method(#add, [event]),
           returnValueForMissingStub: null);
   @override
-  void removeListener(_i7.VoidCallback? listener) =>
-      super.noSuchMethod(Invocation.method(#removeListener, [listener]),
+  void onEvent(_i3.TopRatedTvsEvent? event) =>
+      super.noSuchMethod(Invocation.method(#onEvent, [event]),
           returnValueForMissingStub: null);
   @override
-  void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
-      returnValueForMissingStub: null);
+  void emit(_i3.TopRatedTvsState? state) =>
+      super.noSuchMethod(Invocation.method(#emit, [state]),
+          returnValueForMissingStub: null);
   @override
-  void notifyListeners() =>
-      super.noSuchMethod(Invocation.method(#notifyListeners, []),
+  void on<E extends _i3.TopRatedTvsEvent>(
+          _i5.EventHandler<E, _i3.TopRatedTvsState>? handler,
+          {_i5.EventTransformer<E>? transformer}) =>
+      super.noSuchMethod(
+          Invocation.method(#on, [handler], {#transformer: transformer}),
+          returnValueForMissingStub: null);
+  @override
+  void onTransition(
+          _i5.Transition<_i3.TopRatedTvsEvent, _i3.TopRatedTvsState>?
+              transition) =>
+      super.noSuchMethod(Invocation.method(#onTransition, [transition]),
+          returnValueForMissingStub: null);
+  @override
+  _i4.Future<void> close() => (super.noSuchMethod(Invocation.method(#close, []),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
+  @override
+  void onChange(_i5.Change<_i3.TopRatedTvsState>? change) =>
+      super.noSuchMethod(Invocation.method(#onChange, [change]),
+          returnValueForMissingStub: null);
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) =>
+      super.noSuchMethod(Invocation.method(#addError, [error, stackTrace]),
+          returnValueForMissingStub: null);
+  @override
+  void onError(Object? error, StackTrace? stackTrace) =>
+      super.noSuchMethod(Invocation.method(#onError, [error, stackTrace]),
           returnValueForMissingStub: null);
 }

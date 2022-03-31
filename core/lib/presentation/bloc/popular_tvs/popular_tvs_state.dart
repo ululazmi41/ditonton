@@ -7,24 +7,24 @@ abstract class PopularTvsState extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchLoading extends PopularTvsState {}
+class PopularTvsLoading extends PopularTvsState {}
 
-class FetchError extends PopularTvsState {
+class PopularTvsError extends PopularTvsState {
   final String message;
 
-  const FetchError(this.message);
+  const PopularTvsError(this.message);
 
   @override
   List<Object> get props => [message];
 }
 
-class FetchEmpty extends PopularTvsState {}
+class PopularTvsEmpty extends PopularTvsState {}
 
-class FetchLoaded extends PopularTvsState {
-  final List<Tv> movies;
+class PopularTvsLoaded extends PopularTvsState {
+  final List<Tv> tvs;
 
-  const FetchLoaded(this.movies);
+  const PopularTvsLoaded(this.tvs);
 
   @override
-  List<Object> get props => [movies];
+  List<Object> get props => [tvs];
 }

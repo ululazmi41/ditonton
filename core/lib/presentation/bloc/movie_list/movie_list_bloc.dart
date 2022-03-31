@@ -20,50 +20,22 @@ class MovieListBloc extends Bloc<MovieListEvent, MovieListState> {
   }) : super(MovieListEmpty()) {
     on<FetchNowPlayingMovies>(
       (event, emit) async {
-        emit(FetchLoading());
+        emit(MovieListLoading());
 
         final result = await getNowPlayingMovies.execute();
         result.fold(
           (failure) {
-            emit(FetchError(failure.message));
+            emit(MovieListError(failure.message));
           },
           (movies) {
             if (movies.isEmpty) {
               emit(MovieListEmpty());
             } else {
-              emit(FetchLoaded(movies));
+              emit(MovieListLoaded(movies));
             }
           },
         );
       },
     );
-
-    on<FetchPopularMovies>((event, emit) async {
-      emit(FetchPopularLoading());
-
-      final result = await getPopularMovies.execute();
-      result.fold(
-        (failure) {
-          emit(FetchPopularError(failure.message));
-        },
-        (movies) {
-          emit(FetchPopularLoaded(movies));
-        },
-      );
-    });
-
-    on<FetchTopRatedMovies>((event, emit) async {
-      emit(FetchTopRatedLoading());
-
-      final result = await getTopRatedMovies.execute();
-      result.fold(
-        (failure) {
-          emit(FetchTopRatedError(failure.message));
-        },
-        (movies) {
-          emit(FetchTopRatedLoaded(movies));
-        },
-      );
-    });
   }
 }

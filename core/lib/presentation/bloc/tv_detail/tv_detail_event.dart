@@ -16,6 +16,15 @@ class FetchTvDetail extends TvDetailEvent {
   List<Object> get props => [id];
 }
 
+class FetchRecommendations extends TvDetailEvent {
+  final int id;
+
+  const FetchRecommendations(this.id);
+
+  @override
+  List<Object> get props => [id];
+}
+
 class AddWatchlist extends TvDetailEvent {
   final TvDetail tv;
 

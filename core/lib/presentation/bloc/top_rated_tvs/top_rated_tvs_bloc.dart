@@ -9,21 +9,21 @@ part 'top_rated_tvs_state.dart';
 class TopRatedTvsBloc extends Bloc<TopRatedTvsEvent, TopRatedTvsState> {
   final GetTopRatedTvs getTopRatedTvs;
 
-  TopRatedTvsBloc({required this.getTopRatedTvs}) : super(FetchEmpty()) {
+  TopRatedTvsBloc({required this.getTopRatedTvs}) : super(TopRatedTvsEmpty()) {
     on<FetchTopRatedTvs>((event, emit) async {
-      emit(FetchLoading());
+      emit(TopRatedTvsLoading());
 
       final result = await getTopRatedTvs.execute();
 
       result.fold(
         (failure) {
-          emit(FetchError(failure.message));
+          emit(TopRatedTvsError(failure.message));
         },
         (tvs) {
           if (tvs.isNotEmpty) {
-            emit(FetchLoaded(tvs));
+            emit(TopRatedTvsLoaded(tvs));
           } else {
-            emit(FetchEmpty());
+            emit(TopRatedTvsEmpty());
           }
         },
       );

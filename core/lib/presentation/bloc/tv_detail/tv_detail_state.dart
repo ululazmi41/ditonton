@@ -7,41 +7,57 @@ abstract class TvDetailState extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchLoading extends TvDetailState {}
+class TvDetailLoading extends TvDetailState {}
 
-class FetchEmpty extends TvDetailState {}
+class TvDetailEmpty extends TvDetailState {}
 
-class FetchLoaded extends TvDetailState {
-  final TvDetail result;
+class TvDetailLoaded extends TvDetailState {
+  final TvDetail tv;
+  final bool isAddedtoWatchlist;
+  final List<Tv> recommendations;
 
-  const FetchLoaded(this.result);
+  const TvDetailLoaded(this.tv, this.isAddedtoWatchlist, this.recommendations);
 
   @override
-  List<Object> get props => [result];
+  List<Object> get props => [tv, isAddedtoWatchlist, recommendations];
 }
 
-class FetchError extends TvDetailState {
+class TvDetailError extends TvDetailState {
   final String message;
 
-  const FetchError(this.message);
+  const TvDetailError(this.message);
 
   @override
   List<Object> get props => [message];
 }
 
-class FetchRecommendationError extends TvDetailState {
+class TvDetailErrorRecommendation extends TvDetailState {
+  final TvDetail tv;
+  final bool isAddedtoWatchlist;
   final String message;
 
-  const FetchRecommendationError(this.message);
+  const TvDetailErrorRecommendation(
+      this.tv, this.isAddedtoWatchlist, this.message);
+
+  @override
+  List<Object> get props => [tv, isAddedtoWatchlist, message];
+}
+
+class TvDetailRecommendationLoading extends TvDetailState {}
+
+class TvDetailRecommendationError extends TvDetailState {
+  final String message;
+
+  const TvDetailRecommendationError(this.message);
 
   @override
   List<Object> get props => [message];
 }
 
-class FetchRecommendationLoaded extends TvDetailState {
+class TvDetailRecommendationLoaded extends TvDetailState {
   final List<Tv> tvs;
 
-  const FetchRecommendationLoaded(this.tvs);
+  const TvDetailRecommendationLoaded(this.tvs);
 
   @override
   List<Object> get props => [tvs];
@@ -64,3 +80,25 @@ class IsAddedToWatchlist extends TvDetailState {
   @override
   List<Object> get props => [isAddedToWatchlist];
 }
+
+class AddWatchlistSuccess extends TvDetailState {
+  final String message;
+
+  const AddWatchlistSuccess(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+class AddWatchlistFailed extends TvDetailState {}
+
+class RemoveWatchlistSuccess extends TvDetailState {
+  final String message;
+
+  const RemoveWatchlistSuccess(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+class RemoveWatchlistFailed extends TvDetailState {}

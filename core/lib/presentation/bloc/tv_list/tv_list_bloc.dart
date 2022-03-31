@@ -17,65 +17,29 @@ class TvListBloc extends Bloc<TvListEvent, TvListState> {
     required this.getNowPlayingTvs,
     required this.getPopularTvs,
     required this.getTopRatedTvs,
-  }) : super(FetchEmpty()) {
+  }) : super(TvListEmpty()) {
     on<FetchNowPlayingTvs>(
       (event, emit) async {
-        emit(FetchLoading());
+        emit(TvListLoading());
 
         final result = await getNowPlayingTvs.execute();
         result.fold(
           (failure) {
-            emit(FetchError(failure.message));
+            emit(TvListError(failure.message));
           },
           (tvs) {
             if (tvs.isEmpty) {
-              emit(FetchEmpty());
+              emit(TvListEmpty());
             } else {
               if (tvs.isNotEmpty) {
-                emit(FetchLoaded(tvs));
+                emit(TvListLoaded(tvs));
               } else {
-                emit(FetchEmpty());
+                emit(TvListEmpty());
               }
             }
           },
         );
       },
     );
-
-    on<FetchPopularTvs>((event, emit) async {
-      emit(FetchPopularLoading());
-
-      final result = await getPopularTvs.execute();
-      result.fold(
-        (failure) {
-          emit(FetchPopularError(failure.message));
-        },
-        (tvs) {
-          if (tvs.isNotEmpty) {
-            emit(FetchPopularLoaded(tvs));
-          } else {
-            emit(FetchPopularEmpty());
-          }
-        },
-      );
-    });
-
-    on<FetchTopRatedTvs>((event, emit) async {
-      emit(FetchTopRatedLoading());
-
-      final result = await getTopRatedTvs.execute();
-      result.fold(
-        (failure) {
-          emit(FetchTopRatedError(failure.message));
-        },
-        (tvs) {
-          if (tvs.isNotEmpty) {
-            emit(FetchTopRatedLoaded(tvs));
-          } else {
-            emit(FetchTopRatedEmpty());
-          }
-        },
-      );
-    });
   }
 }

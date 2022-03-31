@@ -12,6 +12,8 @@ part 'tv_detail_event.dart';
 part 'tv_detail_state.dart';
 
 class TvDetailBloc extends Bloc<TvDetailEvent, TvDetailState> {
+  var watchlistMessage = '';
+  var isAdded = false;
   static const watchlistAddSuccessMessage = 'Added to Watchlist';
   static const watchlistRemoveSuccessMessage = 'Removed from Watchlist';
 
@@ -27,71 +29,31 @@ class TvDetailBloc extends Bloc<TvDetailEvent, TvDetailState> {
     required this.getWatchListStatus,
     required this.saveWatchlist,
     required this.removeWatchlist,
-  }) : super(FetchEmpty()) {
+  }) : super(TvDetailEmpty()) {
     on<FetchTvDetail>((event, emit) async {
-      emit(FetchLoading());
-
+      emit(TvDetailLoading());
       final detailResult = await getTvDetail.execute(event.id);
       final recommendationResult = await getTvRecommendations.execute(event.id);
+      final isAddedtoWatchlist = await getWatchListStatus.execute(event.id);
 
       detailResult.fold(
         (failure) {
-          emit(FetchError(failure.message));
+          emit(TvDetailError(failure.message));
         },
-        (tv) {
-          emit(FetchLoaded(tv));
+        (tv) async {
           recommendationResult.fold(
             (failure) {
-              emit(FetchRecommendationError(failure.message));
+              emit(TvDetailErrorRecommendation(
+                  tv, isAddedtoWatchlist, failure.message));
             },
-            (tvs) {
-              emit(FetchRecommendationLoaded(tvs));
+            (recommendation) {
+              emit(
+                TvDetailLoaded(tv, isAddedtoWatchlist, recommendation),
+              );
             },
           );
         },
       );
     });
-
-    on<AddWatchlist>((event, emit) async {
-      final result = await saveWatchlist.execute(event.tv);
-
-      await result.fold(
-        (failure) async {
-          emit(WatchlistMessage(failure.message));
-        },
-        (successMessage) async {
-          emit(WatchlistMessage(successMessage));
-        },
-      );
-
-      bool isAddedtoWatchlist = await _loadWatchlistStatus(event.tv.id);
-      emit(IsAddedToWatchlist(isAddedtoWatchlist));
-    });
-
-    on<RemoveFromWatchlist>((event, emit) async {
-      final result = await removeWatchlist.execute(event.tv);
-
-      await result.fold(
-        (failure) async {
-          emit(WatchlistMessage(failure.message));
-        },
-        (successMessage) async {
-          emit(WatchlistMessage(successMessage));
-        },
-      );
-
-      bool isAddedtoWatchlist = await _loadWatchlistStatus(event.tv.id);
-      emit(IsAddedToWatchlist(isAddedtoWatchlist));
-    });
-
-    on<LoadWatchlistStatus>((event, emit) async {
-      final result = await getWatchListStatus.execute(event.id);
-      emit(IsAddedToWatchlist(result));
-    });
-  }
-
-  Future<bool> _loadWatchlistStatus(int tvId) async {
-    final result = await getWatchListStatus.execute(tvId);
-    return result;
   }
 }

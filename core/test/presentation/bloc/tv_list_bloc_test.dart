@@ -59,8 +59,8 @@ void main() {
       act: (bloc) => bloc.add(FetchNowPlayingTvs()),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        FetchLoading(),
-        FetchEmpty(),
+        TvListLoading(),
+        TvListEmpty(),
       ],
       verify: (bloc) {
         verify(bloc.getNowPlayingTvs.execute());
@@ -77,8 +77,8 @@ void main() {
       act: (bloc) => bloc.add(FetchNowPlayingTvs()),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        FetchLoading(),
-        FetchLoaded(tTvList),
+        TvListLoading(),
+        TvListLoaded(tTvList),
       ],
       verify: (bloc) {
         verify(bloc.getNowPlayingTvs.execute());
@@ -95,123 +95,11 @@ void main() {
       act: (bloc) => bloc.add(FetchNowPlayingTvs()),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        FetchLoading(),
-        const FetchError("Server Failure"),
+        TvListLoading(),
+        TvListError("Server Failure"),
       ],
       verify: (bloc) {
         verify(bloc.getNowPlayingTvs.execute());
-      },
-    );
-  });
-
-  group('popular tvs', () {
-    blocTest<TvListBloc, TvListState>(
-      "should loading and return [] when usecase is called",
-      build: () {
-        when(mockGetPopularTvs.execute())
-            .thenAnswer((_) async => const Right([]));
-        return tvListBloc;
-      },
-      act: (bloc) => bloc.add(FetchPopularTvs()),
-      wait: const Duration(milliseconds: 500),
-      expect: () => [
-        FetchPopularLoading(),
-        FetchPopularEmpty(),
-      ],
-      verify: (bloc) {
-        verify(bloc.getPopularTvs.execute());
-      },
-    );
-
-    blocTest<TvListBloc, TvListState>(
-      "should return List<Tv> when data request is successful",
-      build: () {
-        when(mockGetPopularTvs.execute())
-            .thenAnswer((_) async => Right(tTvList));
-        return tvListBloc;
-      },
-      act: (bloc) => bloc.add(FetchPopularTvs()),
-      wait: const Duration(milliseconds: 500),
-      expect: () => [
-        FetchPopularLoading(),
-        FetchPopularLoaded(tTvList),
-      ],
-      verify: (bloc) {
-        verify(bloc.getPopularTvs.execute());
-      },
-    );
-
-    blocTest<TvListBloc, TvListState>(
-      "should return error when request is unsuccessful",
-      build: () {
-        when(mockGetPopularTvs.execute()).thenAnswer(
-            (_) async => const Left(ServerFailure('Server Failure')));
-        return tvListBloc;
-      },
-      act: (bloc) => bloc.add(FetchPopularTvs()),
-      wait: const Duration(milliseconds: 500),
-      expect: () => [
-        FetchPopularLoading(),
-        const FetchPopularError('Server Failure'),
-      ],
-      verify: (bloc) {
-        verify(bloc.getPopularTvs.execute());
-      },
-    );
-  });
-
-  group('top rated tvs', () {
-    blocTest<TvListBloc, TvListState>(
-      'should loading, return [] when usecase is called',
-      build: () {
-        when(mockGetTopRatedTvs.execute())
-            .thenAnswer((_) async => const Right([]));
-        return tvListBloc;
-      },
-      act: (bloc) => bloc.add(FetchTopRatedTvs()),
-      wait: const Duration(milliseconds: 500),
-      expect: () => [
-        FetchTopRatedLoading(),
-        FetchTopRatedEmpty(),
-      ],
-      verify: (bloc) {
-        verify(bloc.getTopRatedTvs.execute());
-      },
-    );
-
-    blocTest<TvListBloc, TvListState>(
-      'should loading, return List<Tv> when usecase is called',
-      build: () {
-        when(mockGetTopRatedTvs.execute())
-            .thenAnswer((_) async => Right(tTvList));
-        return tvListBloc;
-      },
-      act: (bloc) => bloc.add(FetchTopRatedTvs()),
-      wait: const Duration(milliseconds: 500),
-      expect: () => [
-        FetchTopRatedLoading(),
-        FetchTopRatedLoaded(tTvList),
-      ],
-      verify: (bloc) {
-        verify(bloc.getTopRatedTvs.execute());
-      },
-    );
-
-    blocTest<TvListBloc, TvListState>(
-      'should return error when data is unsuccessful',
-      build: () {
-        when(mockGetTopRatedTvs.execute()).thenAnswer(
-            (_) async => const Left(ServerFailure('Server Failure')));
-        return tvListBloc;
-      },
-      act: (bloc) => bloc.add(FetchTopRatedTvs()),
-      wait: const Duration(milliseconds: 500),
-      expect: () => [
-        FetchTopRatedLoading(),
-        const FetchTopRatedError('Server Failure'),
-      ],
-      verify: (bloc) {
-        verify(bloc.getTopRatedTvs.execute());
       },
     );
   });

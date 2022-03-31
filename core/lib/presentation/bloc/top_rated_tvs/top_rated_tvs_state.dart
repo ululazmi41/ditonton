@@ -7,23 +7,23 @@ abstract class TopRatedTvsState extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchLoading extends TopRatedTvsState {}
+class TopRatedTvsLoading extends TopRatedTvsState {}
 
-class FetchError extends TopRatedTvsState {
+class TopRatedTvsError extends TopRatedTvsState {
   final String message;
 
-  const FetchError(this.message);
+  const TopRatedTvsError(this.message);
 
   @override
   List<Object> get props => [message];
 }
 
-class FetchEmpty extends TopRatedTvsState {}
+class TopRatedTvsEmpty extends TopRatedTvsState {}
 
-class FetchLoaded extends TopRatedTvsState {
+class TopRatedTvsLoaded extends TopRatedTvsState {
   final List<Tv> tvs;
 
-  const FetchLoaded(this.tvs);
+  const TopRatedTvsLoaded(this.tvs);
 
   @override
   List<Object> get props => [tvs];

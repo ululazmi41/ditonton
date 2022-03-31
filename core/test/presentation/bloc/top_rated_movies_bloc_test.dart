@@ -49,8 +49,8 @@ void main() {
     act: (bloc) => bloc.add(FetchTopRatedMovies()),
     wait: const Duration(milliseconds: 500),
     expect: () => [
-      FetchLoading(),
-      FetchEmpty(),
+      TopRatedMoviesLoading(),
+      TopRatedMoviesEmpty(),
     ],
     verify: (bloc) => [
       verify(bloc.getTopRatedMovies.execute()),
@@ -67,8 +67,8 @@ void main() {
     act: (bloc) => bloc.add(FetchTopRatedMovies()),
     wait: const Duration(milliseconds: 500),
     expect: () => [
-      FetchLoading(),
-      FetchLoaded(tMovieList),
+      TopRatedMoviesLoading(),
+      TopRatedMoviesLoaded(tMovieList),
     ],
     verify: (bloc) => [
       verify(bloc.getTopRatedMovies.execute()),
@@ -85,8 +85,8 @@ void main() {
     act: (bloc) => bloc.add(FetchTopRatedMovies()),
     wait: const Duration(milliseconds: 500),
     expect: () => [
-      FetchLoading(),
-      const FetchError('Server Failure'),
+      TopRatedMoviesLoading(),
+      const TopRatedMoviesError('Server Failure'),
     ],
     verify: (bloc) => [
       verify(bloc.getTopRatedMovies.execute()),

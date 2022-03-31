@@ -49,8 +49,8 @@ void main() {
     act: (bloc) => bloc.add(FetchTopRatedTvs()),
     wait: const Duration(milliseconds: 500),
     expect: () => [
-      FetchLoading(),
-      FetchEmpty(),
+      TopRatedTvsLoading(),
+      TopRatedTvsEmpty(),
     ],
     verify: (bloc) => [
       verify(bloc.getTopRatedTvs.execute()),
@@ -67,8 +67,8 @@ void main() {
     act: (bloc) => bloc.add(FetchTopRatedTvs()),
     wait: const Duration(milliseconds: 500),
     expect: () => [
-      FetchLoading(),
-      FetchLoaded(tTvList),
+      TopRatedTvsLoading(),
+      TopRatedTvsLoaded(tTvList),
     ],
     verify: (bloc) => [
       verify(bloc.getTopRatedTvs.execute()),
@@ -85,8 +85,8 @@ void main() {
     act: (bloc) => bloc.add(FetchTopRatedTvs()),
     wait: const Duration(milliseconds: 500),
     expect: () => [
-      FetchLoading(),
-      const FetchError('Server Failure'),
+      TopRatedTvsLoading(),
+      const TopRatedTvsError('Server Failure'),
     ],
     verify: (bloc) => [
       verify(bloc.getTopRatedTvs.execute()),

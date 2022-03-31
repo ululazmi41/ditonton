@@ -7,23 +7,23 @@ abstract class PopularMoviesState extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchLoading extends PopularMoviesState {}
+class PopularMoviesLoading extends PopularMoviesState {}
 
-class FetchError extends PopularMoviesState {
+class PopularMoviesError extends PopularMoviesState {
   final String message;
 
-  const FetchError(this.message);
+  const PopularMoviesError(this.message);
 
   @override
   List<Object> get props => [message];
 }
 
-class FetchEmpty extends PopularMoviesState {}
+class PopularMoviesEmpty extends PopularMoviesState {}
 
-class FetchLoaded extends PopularMoviesState {
+class PopularMoviesLoaded extends PopularMoviesState {
   final List<Movie> movies;
 
-  const FetchLoaded(this.movies);
+  const PopularMoviesLoaded(this.movies);
 
   @override
   List<Object> get props => [movies];

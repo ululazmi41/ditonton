@@ -10,21 +10,22 @@ class TopRatedMoviesBloc
     extends Bloc<TopRatedMoviesEvent, TopRatedMoviesState> {
   final GetTopRatedMovies getTopRatedMovies;
 
-  TopRatedMoviesBloc({required this.getTopRatedMovies}) : super(FetchEmpty()) {
+  TopRatedMoviesBloc({required this.getTopRatedMovies})
+      : super(TopRatedMoviesEmpty()) {
     on<FetchTopRatedMovies>((event, emit) async {
-      emit(FetchLoading());
+      emit(TopRatedMoviesLoading());
 
       final result = await getTopRatedMovies.execute();
 
       result.fold(
         (failure) {
-          emit(FetchError(failure.message));
+          emit(TopRatedMoviesError(failure.message));
         },
         (movies) {
           if (movies.isNotEmpty) {
-            emit(FetchLoaded(movies));
+            emit(TopRatedMoviesLoaded(movies));
           } else {
-            emit(FetchEmpty());
+            emit(TopRatedMoviesEmpty());
           }
         },
       );
