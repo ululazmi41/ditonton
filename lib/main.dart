@@ -13,6 +13,7 @@ import 'package:core/presentation/pages/watchlist_tvs_page.dart';
 
 import 'package:core/presentation/widgets/custom_drawer.dart';
 import 'package:core/utils/utils.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,7 +42,10 @@ import 'package:core/presentation/bloc/tv_detail/tv_detail_bloc.dart';
 import 'package:core/presentation/bloc/tv_detail_recommendation/tv_detail_recommendation_bloc.dart';
 import 'package:core/presentation/bloc/tv_detail_watchlist/tv_detail_watchlist_bloc.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  HttpSSLPinning.init();
   di.init();
   runApp(MyApp());
 }

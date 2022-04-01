@@ -273,6 +273,8 @@ class DetailContent extends StatelessWidget {
                                       itemCount: recommendations.length,
                                     ),
                                   );
+                                } else if (state is MovieDetailREmpty) {
+                                  return const Center(child: Text('Empty'));
                                 } else {
                                   return Container();
                                 }

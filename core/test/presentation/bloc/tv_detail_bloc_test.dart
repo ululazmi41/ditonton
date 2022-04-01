@@ -7,6 +7,8 @@ import 'package:core/domain/usecases/get_watchlist_tv_status.dart';
 import 'package:core/domain/usecases/remove_tv_watchlist.dart';
 import 'package:core/domain/usecases/save_tv_watchlist.dart';
 import 'package:core/presentation/bloc/tv_detail/tv_detail_bloc.dart';
+import 'package:core/presentation/bloc/tv_detail_recommendation/tv_detail_recommendation_bloc.dart';
+import 'package:core/presentation/bloc/tv_detail_watchlist/tv_detail_watchlist_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -24,6 +26,8 @@ import 'tv_detail_bloc_test.mocks.dart';
 ])
 void main() {
   late TvDetailBloc tvDetailBloc;
+  late TvDetailRBloc tvDetailRBloc;
+  late TvDetailWatchlistBloc tvDetailWatchlistBloc;
   late MockGetTvDetail mockGetTvDetail;
   late MockGetTvRecommendations mockGetTvRecommendations;
   late MockGetWatchListTvStatus mockGetWatchlistTvStatus;
@@ -39,6 +43,14 @@ void main() {
     tvDetailBloc = TvDetailBloc(
       getTvDetail: mockGetTvDetail,
       getTvRecommendations: mockGetTvRecommendations,
+      getWatchListStatus: mockGetWatchlistTvStatus,
+      saveWatchlist: mockSaveWatchlist,
+      removeWatchlist: mockRemoveWatchlist,
+    );
+    tvDetailRBloc = TvDetailRBloc(
+      getTvRecommendations: mockGetTvRecommendations,
+    );
+    tvDetailWatchlistBloc = TvDetailWatchlistBloc(
       getWatchListStatus: mockGetWatchlistTvStatus,
       saveWatchlist: mockSaveWatchlist,
       removeWatchlist: mockRemoveWatchlist,
@@ -139,34 +151,34 @@ void main() {
   });
 
   group('Watchlist', () {
-    blocTest<TvDetailBloc, TvDetailState>(
+    blocTest<TvDetailWatchlistBloc, TvDetailWatchlistState>(
       "should get the watchlist status",
       build: () {
         when(mockGetWatchlistTvStatus.execute(tId))
             .thenAnswer((_) async => true);
-        return tvDetailBloc;
+        return tvDetailWatchlistBloc;
       },
-      act: (bloc) => bloc.add(const LoadWatchlistStatus(tId)),
+      act: (bloc) => bloc.add(const LoadWatchlist(tId)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        const IsAddedToWatchlist(true),
+        const WatchlistLoaded(true),
       ],
     );
 
-    blocTest<TvDetailBloc, TvDetailState>(
+    blocTest<TvDetailWatchlistBloc, TvDetailWatchlistState>(
       'should save watchlist when usecase is called',
       build: () {
         when(mockSaveWatchlist.execute(testTvDetail))
             .thenAnswer((_) async => const Right('Success'));
         when(mockGetWatchlistTvStatus.execute(tId))
             .thenAnswer((_) async => true);
-        return tvDetailBloc;
+        return tvDetailWatchlistBloc;
       },
-      act: (bloc) => bloc.add(AddWatchlist(testTvDetail)),
+      act: (bloc) => bloc.add(AddingWatchlist(testTvDetail)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        const WatchlistMessage('Success'),
-        const IsAddedToWatchlist(true),
+        const AddingWatchlistSuccess('Success'),
+        const WatchlistLoaded(true),
       ],
       verify: (bloc) {
         verify(bloc.saveWatchlist.execute(testTvDetail));
@@ -174,61 +186,40 @@ void main() {
       },
     );
 
-    blocTest<TvDetailBloc, TvDetailState>(
-      'should execute remove watchlist when function called',
-      build: () {
-        when(mockRemoveWatchlist.execute(testTvDetail))
-            .thenAnswer((_) async => const Right('Removed'));
-        when(mockGetWatchlistTvStatus.execute(tId))
-            .thenAnswer((_) async => false);
-        return tvDetailBloc;
-      },
-      act: (bloc) => bloc.add(RemoveFromWatchlist(testTvDetail)),
-      wait: const Duration(milliseconds: 500),
-      expect: () => [
-        const WatchlistMessage('Removed'),
-        const IsAddedToWatchlist(false),
-      ],
-      verify: (bloc) {
-        verify(bloc.removeWatchlist.execute(testTvDetail));
-        verify(bloc.getWatchListStatus.execute(tId));
-      },
-    );
-
-    blocTest<TvDetailBloc, TvDetailState>(
+    blocTest<TvDetailWatchlistBloc, TvDetailWatchlistState>(
       'should execute remove watchlist when usecase is called',
       build: () {
-        when(mockSaveWatchlist.execute(testTvDetail))
-            .thenAnswer((_) async => const Right('Added to Watchlist'));
+        when(mockRemoveWatchlist.execute(testTvDetail))
+            .thenAnswer((_) async => const Right('Removed from Watchlist'));
         when(mockGetWatchlistTvStatus.execute(tId))
             .thenAnswer((_) async => true);
-        return tvDetailBloc;
+        return tvDetailWatchlistBloc;
       },
-      act: (bloc) => bloc.add(AddWatchlist(testTvDetail)),
+      act: (bloc) => bloc.add(RemovingWatchlist(testTvDetail)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        const WatchlistMessage('Added to Watchlist'),
-        const IsAddedToWatchlist(true),
+        const RemovingWatchlistSuccess('Removed from Watchlist'),
+        const WatchlistLoaded(true),
       ],
       verify: (bloc) {
         verify(bloc.getWatchListStatus.execute(testTvDetail.id));
       },
     );
 
-    blocTest<TvDetailBloc, TvDetailState>(
+    blocTest<TvDetailWatchlistBloc, TvDetailWatchlistState>(
       'should return error when removing watchlist was unsuccesful',
       build: () {
         when(mockRemoveWatchlist.execute(testTvDetail))
             .thenAnswer((_) async => const Left(DatabaseFailure('Failed')));
         when(mockGetWatchlistTvStatus.execute(tId))
             .thenAnswer((_) async => false);
-        return tvDetailBloc;
+        return tvDetailWatchlistBloc;
       },
-      act: (bloc) => bloc.add(RemoveFromWatchlist(testTvDetail)),
+      act: (bloc) => bloc.add(RemovingWatchlist(testTvDetail)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        const WatchlistMessage('Failed'),
-        const IsAddedToWatchlist(false),
+        // const RemovingWatchlistSuccess('Failed'),
+        const WatchlistLoaded(false),
       ],
       verify: (bloc) {
         verify(bloc.removeWatchlist.execute(testTvDetail));
@@ -237,54 +228,54 @@ void main() {
   });
 
   group('recommendations', () {
-    blocTest<TvDetailBloc, TvDetailState>(
+    blocTest<TvDetailRBloc, TvDetailRState>(
       'should return empty data when request is successful',
       build: () {
         when(mockGetTvRecommendations.execute(tId))
             .thenAnswer((_) async => Right([]));
-        return tvDetailBloc;
+        return tvDetailRBloc;
       },
-      act: (bloc) => bloc.add(const FetchRecommendations(tId)),
+      act: (bloc) => bloc.add(const FetchTvR(tId)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        TvDetailRecommendationLoading(),
-        TvDetailRecommendationLoaded([]),
+        TvDetailRLoading(),
+        TvDetailREmpty(),
       ],
       verify: (bloc) {
         verify(bloc.getTvRecommendations.execute(tId));
       },
     );
 
-    blocTest<TvDetailBloc, TvDetailState>(
+    blocTest<TvDetailRBloc, TvDetailRState>(
       'should return data when request is successful',
       build: () {
         when(mockGetTvRecommendations.execute(tId))
             .thenAnswer((_) async => Right(testTvList));
-        return tvDetailBloc;
+        return tvDetailRBloc;
       },
-      act: (bloc) => bloc.add(const FetchRecommendations(tId)),
+      act: (bloc) => bloc.add(const FetchTvR(tId)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        TvDetailRecommendationLoading(),
-        TvDetailRecommendationLoaded(testTvList),
+        TvDetailRLoading(),
+        TvDetailRLoaded(testTvList),
       ],
       verify: (bloc) {
         verify(bloc.getTvRecommendations.execute(tId));
       },
     );
 
-    blocTest<TvDetailBloc, TvDetailState>(
+    blocTest<TvDetailRBloc, TvDetailRState>(
       'should return error when request is unsuccessful',
       build: () {
         when(mockGetTvRecommendations.execute(tId))
             .thenAnswer((_) async => Left(ServerFailure('Failed')));
-        return tvDetailBloc;
+        return tvDetailRBloc;
       },
-      act: (bloc) => bloc.add(const FetchRecommendations(tId)),
+      act: (bloc) => bloc.add(const FetchTvR(tId)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        TvDetailRecommendationLoading(),
-        const TvDetailRecommendationError('Failed'),
+        TvDetailRLoading(),
+        const TvDetailRError('Failed'),
       ],
       verify: (bloc) {
         verify(bloc.getTvRecommendations.execute(tId));

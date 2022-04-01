@@ -26,7 +26,6 @@ class _TvDetailPageState extends State<TvDetailPage> {
     super.initState();
     Future.microtask(() {
       context.read<TvDetailBloc>().add(FetchTvDetail(widget.id));
-      // context.read<TvDetailBloc>().add(LoadWatchlistStatus(widget.id));
       context.read<TvDetailRBloc>().add(FetchTvR(widget.id));
       context.read<TvDetailWatchlistBloc>().add(
             LoadWatchlist(widget.id),
@@ -267,6 +266,9 @@ class DetailContent extends StatelessWidget {
                                       itemCount: recommendations.length,
                                     ),
                                   );
+                                }
+                                if (state is TvDetailREmpty) {
+                                  return const Center(child: Text('Empty'));
                                 } else {
                                   return Container();
                                 }

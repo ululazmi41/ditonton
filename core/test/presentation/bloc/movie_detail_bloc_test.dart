@@ -7,6 +7,8 @@ import 'package:core/domain/usecases/get_watchlist_status.dart';
 import 'package:core/domain/usecases/remove_watchlist.dart';
 import 'package:core/domain/usecases/save_watchlist.dart';
 import 'package:core/presentation/bloc/movie_detail/movie_detail_bloc.dart';
+import 'package:core/presentation/bloc/movie_detail_recommendation/movie_detail_recommendation_bloc.dart';
+import 'package:core/presentation/bloc/movie_detail_watchlist/movie_detail_watchlist_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -24,6 +26,8 @@ import 'movie_detail_bloc_test.mocks.dart';
 ])
 void main() {
   late MovieDetailBloc movieDetailBloc;
+  late MovieDetailWatchlistBloc movieDetailWatchlistBloc;
+  late MovieDetailRBloc movieDetailRBloc;
   late MockGetMovieDetail mockGetMovieDetail;
   late MockGetMovieRecommendations mockGetMovieRecommendations;
   late MockGetWatchListStatus mockGetWatchlistStatus;
@@ -31,17 +35,25 @@ void main() {
   late MockRemoveWatchlist mockRemoveWatchlist;
 
   setUp(() {
-    mockGetMovieDetail = MockGetMovieDetail();
     mockGetMovieRecommendations = MockGetMovieRecommendations();
     mockGetWatchlistStatus = MockGetWatchListStatus();
     mockSaveWatchlist = MockSaveWatchlist();
     mockRemoveWatchlist = MockRemoveWatchlist();
+    mockGetMovieDetail = MockGetMovieDetail();
     movieDetailBloc = MovieDetailBloc(
       getMovieDetail: mockGetMovieDetail,
       getMovieRecommendations: mockGetMovieRecommendations,
       getWatchListStatus: mockGetWatchlistStatus,
       saveWatchlist: mockSaveWatchlist,
       removeWatchlist: mockRemoveWatchlist,
+    );
+    movieDetailWatchlistBloc = MovieDetailWatchlistBloc(
+      getWatchListStatus: mockGetWatchlistStatus,
+      saveWatchlist: mockSaveWatchlist,
+      removeWatchlist: mockRemoveWatchlist,
+    );
+    movieDetailRBloc = MovieDetailRBloc(
+      getMovieRecommendations: mockGetMovieRecommendations,
     );
   });
 
@@ -132,77 +144,77 @@ void main() {
   });
 
   group('Watchlist', () {
-    blocTest<MovieDetailBloc, MovieDetailState>(
+    blocTest<MovieDetailWatchlistBloc, MovieDetailWatchlistState>(
       "should get the watchlist status",
       build: () {
         when(mockGetWatchlistStatus.execute(tId)).thenAnswer((_) async => true);
-        return movieDetailBloc;
+        return movieDetailWatchlistBloc;
       },
-      act: (bloc) => bloc.add(const LoadWatchlistStatus(tId)),
+      act: (bloc) => bloc.add(const LoadWatchlist(tId)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        const IsAddedToWatchlist(true),
+        const WatchlistLoaded(true),
       ],
       verify: (bloc) {
         verify(bloc.getWatchListStatus.execute(tId));
       },
     );
 
-    blocTest<MovieDetailBloc, MovieDetailState>(
+    blocTest<MovieDetailWatchlistBloc, MovieDetailWatchlistState>(
       "should execute save watchlist when function called",
       build: () {
         when(mockSaveWatchlist.execute(testMovieDetail))
             .thenAnswer((_) async => const Right('Added to Watchlist'));
         when(mockGetWatchlistStatus.execute(testMovieDetail.id))
             .thenAnswer((_) async => true);
-        return movieDetailBloc;
+        return movieDetailWatchlistBloc;
       },
-      act: (bloc) => bloc.add(const AddWatchlist(testMovieDetail)),
+      act: (bloc) => bloc.add(const AddingWatchlist(testMovieDetail)),
       wait: const Duration(milliseconds: 500),
       verify: (bloc) {
         verify(mockSaveWatchlist.execute(testMovieDetail));
         verify(mockGetWatchlistStatus.execute(testMovieDetail.id));
       },
       expect: () => [
-        const AddWatchlistMessage('Added to Watchlist'),
-        const IsAddedToWatchlist(true),
+        const AddingWatchlistSuccess('Added to Watchlist'),
+        const WatchlistLoaded(true),
       ],
     );
 
-    blocTest<MovieDetailBloc, MovieDetailState>(
+    blocTest<MovieDetailWatchlistBloc, MovieDetailWatchlistState>(
       "should display error message when fails adding watchlist",
       build: () {
         when(mockSaveWatchlist.execute(testMovieDetail))
             .thenAnswer((_) async => const Left(DatabaseFailure('Failed')));
         when(mockGetWatchlistStatus.execute(testMovieDetail.id))
             .thenAnswer((_) async => false);
-        return movieDetailBloc;
+        return movieDetailWatchlistBloc;
       },
-      act: (bloc) => bloc.add(const AddWatchlist(testMovieDetail)),
+      act: (bloc) => bloc.add(const AddingWatchlist(testMovieDetail)),
       wait: const Duration(milliseconds: 500),
       verify: (bloc) {
         verify(mockGetWatchlistStatus.execute(testMovieDetail.id));
       },
       expect: () => [
-        const AddWatchlistMessage('Failed'),
-        const IsAddedToWatchlist(false),
+        // const AddingWatchlistSuccess('Failed'),
+        const WatchlistLoaded(false),
       ],
     );
 
-    blocTest<MovieDetailBloc, MovieDetailState>(
+    blocTest<MovieDetailWatchlistBloc, MovieDetailWatchlistState>(
       "should remove watchlist when function called",
       build: () {
         when(mockRemoveWatchlist.execute(testMovieDetail))
-            .thenAnswer((_) async => const Right('Failed'));
+            .thenAnswer((_) async => Left(DatabaseFailure("Failed")));
         when(mockGetWatchlistStatus.execute(testMovieDetail.id))
             .thenAnswer((_) async => false);
-        return movieDetailBloc;
+        return movieDetailWatchlistBloc;
       },
-      act: (bloc) => bloc.add(const RemoveFromWatchlist(testMovieDetail)),
+      act: (bloc) => bloc.add(const RemovingWatchlist(testMovieDetail)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        const AddWatchlistMessage('Failed'),
-        const IsAddedToWatchlist(false),
+        const WatchlistLoaded(false),
+        // const RemovingWatchlistSuccess('Failed'),
       ],
       verify: (bloc) {
         verify(bloc.removeWatchlist.execute(testMovieDetail));
@@ -212,54 +224,54 @@ void main() {
   });
 
   group('Recommendation', () {
-    blocTest<MovieDetailBloc, MovieDetailState>(
+    blocTest<MovieDetailRBloc, MovieDetailRState>(
       "should return [] when request in successful",
       build: () {
         when(mockGetMovieRecommendations.execute(tId))
             .thenAnswer((_) async => Right([]));
-        return movieDetailBloc;
+        return movieDetailRBloc;
       },
-      act: (bloc) => bloc.add(const FetchMovieRecommendations(tId)),
+      act: (bloc) => bloc.add(const FetchMovieR(tId)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        MovieDetailRecommendationLoading(),
-        MovieDetailRecommendationEmpty(),
+        MovieDetailRLoading(),
+        MovieDetailREmpty(),
       ],
       verify: (bloc) {
         verify(bloc.getMovieRecommendations.execute(tId));
       },
     );
 
-    blocTest<MovieDetailBloc, MovieDetailState>(
+    blocTest<MovieDetailRBloc, MovieDetailRState>(
       "should return data when request in successful",
       build: () {
         when(mockGetMovieRecommendations.execute(tId))
             .thenAnswer((_) async => Right(testMovieList));
-        return movieDetailBloc;
+        return movieDetailRBloc;
       },
-      act: (bloc) => bloc.add(const FetchMovieRecommendations(tId)),
+      act: (bloc) => bloc.add(const FetchMovieR(tId)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        MovieDetailRecommendationLoading(),
-        MovieDetailRecommendationLoaded(testMovieList),
+        MovieDetailRLoading(),
+        MovieDetailRLoaded(testMovieList),
       ],
       verify: (bloc) {
         verify(bloc.getMovieRecommendations.execute(tId));
       },
     );
 
-    blocTest<MovieDetailBloc, MovieDetailState>(
+    blocTest<MovieDetailRBloc, MovieDetailRState>(
       "should return error when request in unsuccessful",
       build: () {
         when(mockGetMovieRecommendations.execute(tId))
             .thenAnswer((_) async => const Left(ServerFailure('Failed')));
-        return movieDetailBloc;
+        return movieDetailRBloc;
       },
-      act: (bloc) => bloc.add(const FetchMovieRecommendations(tId)),
+      act: (bloc) => bloc.add(const FetchMovieR(tId)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
-        MovieDetailRecommendationLoading(),
-        MovieDetailRecommendationError('Failed'),
+        MovieDetailRLoading(),
+        MovieDetailRError('Failed'),
       ],
     );
   });

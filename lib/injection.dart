@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:core/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import 'package:core/presentation/bloc/movie_detail_recommendation/movie_detail_recommendation_bloc.dart';
 import 'package:core/presentation/bloc/movie_detail_watchlist/movie_detail_watchlist_bloc.dart';
@@ -41,7 +42,6 @@ import 'package:core/domain/usecases/remove_watchlist.dart';
 import 'package:core/domain/usecases/save_tv_watchlist.dart';
 import 'package:core/domain/usecases/save_watchlist.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
-import 'package:http/http.dart' as http;
 import 'package:get_it/get_it.dart';
 
 // Search
@@ -183,6 +183,6 @@ void init() {
   locator.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(locator()));
 
   // external
-  locator.registerLazySingleton(() => http.Client());
+  locator.registerLazySingleton(() => HttpSSLPinning.client);
   locator.registerLazySingleton(() => DataConnectionChecker());
 }
