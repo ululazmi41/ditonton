@@ -45,7 +45,7 @@ class MovieDetailWatchlistBloc
 
       result.fold(
         (failure) {
-          //
+          emit(RemovingWatchlistFailed(failure.message));
         },
         (successMessage) {
           emit(RemovingWatchlistSuccess(successMessage));

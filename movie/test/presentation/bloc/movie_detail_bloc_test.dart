@@ -205,6 +205,27 @@ void main() {
       "should remove watchlist when function called",
       build: () {
         when(mockRemoveWatchlist.execute(testMovieDetail))
+            .thenAnswer((_) async => Right('Success'));
+        when(mockGetWatchlistStatus.execute(testMovieDetail.id))
+            .thenAnswer((_) async => false);
+        return movieDetailWatchlistBloc;
+      },
+      act: (bloc) => bloc.add(const RemovingWatchlist(testMovieDetail)),
+      wait: const Duration(milliseconds: 500),
+      expect: () => [
+        const RemovingWatchlistSuccess('Success'),
+        const WatchlistLoaded(false),
+      ],
+      verify: (bloc) {
+        verify(bloc.removeWatchlist.execute(testMovieDetail));
+        verify(bloc.getWatchListStatus.execute(tId));
+      },
+    );
+
+    blocTest<MovieDetailWatchlistBloc, MovieDetailWatchlistState>(
+      "should fails toremove watchlist when function called",
+      build: () {
+        when(mockRemoveWatchlist.execute(testMovieDetail))
             .thenAnswer((_) async => Left(DatabaseFailure("Failed")));
         when(mockGetWatchlistStatus.execute(testMovieDetail.id))
             .thenAnswer((_) async => false);
@@ -213,8 +234,8 @@ void main() {
       act: (bloc) => bloc.add(const RemovingWatchlist(testMovieDetail)),
       wait: const Duration(milliseconds: 500),
       expect: () => [
+        const RemovingWatchlistFailed('Failed'),
         const WatchlistLoaded(false),
-        // const RemovingWatchlistSuccess('Failed'),
       ],
       verify: (bloc) {
         verify(bloc.removeWatchlist.execute(testMovieDetail));

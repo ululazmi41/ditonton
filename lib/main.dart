@@ -1,5 +1,16 @@
 import 'package:about/about.dart';
 import 'package:core/core.dart';
+import 'package:core/utils/utils.dart';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+
+import 'package:ditonton/injection.dart' as di;
+
+import 'package:core/presentation/widgets/custom_drawer.dart';
 
 // Movie Pages
 import 'package:movie/presentation/pages/movie_detail_page.dart';
@@ -13,15 +24,6 @@ import 'package:tv/presentation/pages/popular_tvs_page.dart';
 import 'package:tv/presentation/pages/top_rated_tvs_page.dart';
 import 'package:tv/presentation/pages/tv_detail_page.dart';
 import 'package:tv/presentation/pages/watchlist_tvs_page.dart';
-
-import 'package:core/presentation/widgets/custom_drawer.dart';
-import 'package:core/utils/utils.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
-import 'package:ditonton/injection.dart' as di;
 
 import 'package:search/presentation/pages/search_page.dart';
 import 'package:search/presentation/bloc/search/search_bloc.dart';

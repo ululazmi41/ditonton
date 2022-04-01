@@ -35,3 +35,12 @@ class RemovingWatchlistSuccess extends MovieDetailWatchlistState {
   @override
   List<Object> get props => [message];
 }
+
+class RemovingWatchlistFailed extends MovieDetailWatchlistState {
+  final String message;
+
+  const RemovingWatchlistFailed(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
