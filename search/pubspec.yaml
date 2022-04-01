@@ -9,6 +9,10 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  movie:
+    path: ../movie
+  tv:
+    path: ../tv
   core:
     path: ../core
   dartz: ^0.10.1

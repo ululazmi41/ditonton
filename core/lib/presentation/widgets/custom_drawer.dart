@@ -1,9 +1,11 @@
 import '../../utils/routes.dart';
-import '../pages/home_movie_page.dart';
-import '../pages/home_tv_page.dart';
-import '../pages/watchlist_movies_page.dart';
-import '../pages/watchlist_tvs_page.dart';
 import 'package:flutter/material.dart';
+
+import 'package:movie/presentation/pages/home_movie_page.dart';
+import 'package:movie/presentation/pages/watchlist_movies_page.dart';
+
+import 'package:tv/presentation/pages/home_tv_page.dart';
+import 'package:tv/presentation/pages/watchlist_tvs_page.dart';
 
 class CustomDrawer extends StatefulWidget {
   final Widget content;

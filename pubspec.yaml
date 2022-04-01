@@ -23,6 +23,10 @@ environment:
 dependencies:
   about:
     path: about
+  movie:
+    path: movie
+  tv:
+    path: tv
   build_runner: ^2.1.8
   cached_network_image: ^3.0.0
   core:

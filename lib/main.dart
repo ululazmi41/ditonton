@@ -1,15 +1,18 @@
 import 'package:about/about.dart';
 import 'package:core/core.dart';
-import 'package:core/presentation/pages/home_tv_page.dart';
-import 'package:core/presentation/pages/movie_detail_page.dart';
-import 'package:core/presentation/pages/home_movie_page.dart';
-import 'package:core/presentation/pages/popular_movies_page.dart';
-import 'package:core/presentation/pages/popular_tvs_page.dart';
-import 'package:core/presentation/pages/top_rated_movies_page.dart';
-import 'package:core/presentation/pages/top_rated_tvs_page.dart';
-import 'package:core/presentation/pages/tv_detail_page.dart';
-import 'package:core/presentation/pages/watchlist_movies_page.dart';
-import 'package:core/presentation/pages/watchlist_tvs_page.dart';
+
+// Movie Pages
+import 'package:movie/presentation/pages/movie_detail_page.dart';
+import 'package:movie/presentation/pages/home_movie_page.dart';
+import 'package:movie/presentation/pages/popular_movies_page.dart';
+import 'package:movie/presentation/pages/top_rated_movies_page.dart';
+import 'package:movie/presentation/pages/watchlist_movies_page.dart';
+
+import 'package:tv/presentation/pages/home_tv_page.dart';
+import 'package:tv/presentation/pages/popular_tvs_page.dart';
+import 'package:tv/presentation/pages/top_rated_tvs_page.dart';
+import 'package:tv/presentation/pages/tv_detail_page.dart';
+import 'package:tv/presentation/pages/watchlist_tvs_page.dart';
 
 import 'package:core/presentation/widgets/custom_drawer.dart';
 import 'package:core/utils/utils.dart';
@@ -19,28 +22,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:ditonton/injection.dart' as di;
-import 'package:search/presentation/bloc/search/search_bloc.dart';
 
 import 'package:search/presentation/pages/search_page.dart';
+import 'package:search/presentation/bloc/search/search_bloc.dart';
+
 import 'package:search/presentation/pages/search_tv_page.dart';
-import 'package:core/presentation/bloc/movie_list/movie_list_bloc.dart';
-import 'package:core/presentation/bloc/popular_movies/popular_movies_bloc.dart';
-import 'package:core/presentation/bloc/popular_tvs/popular_tvs_bloc.dart';
-import 'package:core/presentation/bloc/top_rated_movies/top_rated_movies_bloc.dart';
-import 'package:core/presentation/bloc/top_rated_tvs/top_rated_tvs_bloc.dart';
-import 'package:core/presentation/bloc/tv_list/tv_list_bloc.dart';
-import 'package:core/presentation/bloc/watchlist_movie/watchlist_movie_bloc.dart';
-import 'package:core/presentation/bloc/watchlist_tv/watchlist_tv_bloc.dart';
+import 'package:search/presentation/bloc/search_tv/search_tv_bloc.dart';
+
+// Movie
+import 'package:movie/presentation/bloc/movie_list/movie_list_bloc.dart';
+import 'package:movie/presentation/bloc/popular_movies/popular_movies_bloc.dart';
+import 'package:movie/presentation/bloc/top_rated_movies/top_rated_movies_bloc.dart';
+import 'package:movie/presentation/bloc/watchlist_movie/watchlist_movie_bloc.dart';
 
 // Movie Detail
-import 'package:core/presentation/bloc/movie_detail/movie_detail_bloc.dart';
-import 'package:core/presentation/bloc/movie_detail_recommendation/movie_detail_recommendation_bloc.dart';
-import 'package:core/presentation/bloc/movie_detail_watchlist/movie_detail_watchlist_bloc.dart';
+import 'package:movie/presentation/bloc/movie_detail/movie_detail_bloc.dart';
+import 'package:movie/presentation/bloc/movie_detail_recommendation/movie_detail_recommendation_bloc.dart';
+import 'package:movie/presentation/bloc/movie_detail_watchlist/movie_detail_watchlist_bloc.dart';
+
+// Tv
+import 'package:tv/presentation/bloc/popular_tvs/popular_tvs_bloc.dart';
+import 'package:tv/presentation/bloc/top_rated_tvs/top_rated_tvs_bloc.dart';
+import 'package:tv/presentation/bloc/tv_list/tv_list_bloc.dart';
+import 'package:tv/presentation/bloc/watchlist_tv/watchlist_tv_bloc.dart';
 
 // Tv Detail
-import 'package:core/presentation/bloc/tv_detail/tv_detail_bloc.dart';
-import 'package:core/presentation/bloc/tv_detail_recommendation/tv_detail_recommendation_bloc.dart';
-import 'package:core/presentation/bloc/tv_detail_watchlist/tv_detail_watchlist_bloc.dart';
+import 'package:tv/presentation/bloc/tv_detail/tv_detail_bloc.dart';
+import 'package:tv/presentation/bloc/tv_detail_recommendation/tv_detail_recommendation_bloc.dart';
+import 'package:tv/presentation/bloc/tv_detail_watchlist/tv_detail_watchlist_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -99,6 +108,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => di.locator<SearchBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.locator<SearchTvsBloc>(),
         )
       ],
       child: MaterialApp(

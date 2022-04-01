@@ -9,6 +9,10 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  tv:
+    path: ../tv
+  movie:
+    path: ../movie
   bloc_test: ^9.0.3
   cached_network_image: ^3.2.0
   dartz: ^0.10.1
