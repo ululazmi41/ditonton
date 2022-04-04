@@ -1,4 +1,5 @@
 import 'package:core/domain/entities/genre.dart';
+import 'package:tv/data/models/tv_detail_model.dart';
 
 import 'package:tv/data/models/tv_table.dart';
 import 'package:tv/domain/entities/tv.dart';
@@ -47,6 +48,16 @@ final testTv = Tv(
 final testTvList = [testTv];
 
 final testTvDetail = TvDetail(
+  seasons: [
+    Season(
+        airDate: DateTime.parse("2000-02-02"),
+        id: 1,
+        episodeCount: 1,
+        seasonNumber: 2,
+        overview: 'test',
+        posterPath: 'test',
+        name: 'test,'),
+  ],
   name: 'title',
   adult: false,
   backdropPath: "test",

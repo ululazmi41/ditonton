@@ -38,6 +38,7 @@ class _HomeTvPageState extends State<HomeTvPage> {
       child: CustomDrawer(
         content: Scaffold(
           appBar: AppBar(
+            leading: Icon(Icons.menu),
             title: const Text('Ditonton'),
             actions: [
               IconButton(

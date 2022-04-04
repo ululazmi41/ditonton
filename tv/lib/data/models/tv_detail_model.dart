@@ -179,6 +179,7 @@ class TvDetailResponse extends Equatable {
       status: status,
       genres: genres.map((genre) => genre.toEntity()).toList(),
       id: id,
+      seasons: seasons,
       originalName: originalName,
       overview: overview,
       posterPath: posterPath,

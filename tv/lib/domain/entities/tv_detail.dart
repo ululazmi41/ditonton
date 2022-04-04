@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import 'package:core/domain/entities/genre.dart';
+import 'package:tv/data/models/tv_detail_model.dart';
 
 class TvDetail extends Equatable {
   const TvDetail({
@@ -26,6 +27,7 @@ class TvDetail extends Equatable {
     required this.popularity,
     required this.posterPath,
     required this.productionCompanies,
+    required this.seasons,
     required this.status,
     required this.tagline,
     required this.type,
@@ -55,6 +57,7 @@ class TvDetail extends Equatable {
   final double popularity;
   final String posterPath;
   final List<dynamic> productionCompanies;
+  final List<Season> seasons;
   final String status;
   final String tagline;
   final String type;
