@@ -39,6 +39,7 @@ class _WatchlistMoviesPageState extends State<WatchlistMoviesPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Icon(Icons.menu),
         title: const Text('Watchlist Movies'),
       ),
       body: Padding(

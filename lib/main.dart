@@ -18,11 +18,14 @@ import 'package:movie/presentation/pages/home_movie_page.dart';
 import 'package:movie/presentation/pages/popular_movies_page.dart';
 import 'package:movie/presentation/pages/top_rated_movies_page.dart';
 import 'package:movie/presentation/pages/watchlist_movies_page.dart';
+import 'package:tv/data/models/tv_detail_model.dart';
 
+// Tv Pages
 import 'package:tv/presentation/pages/home_tv_page.dart';
 import 'package:tv/presentation/pages/popular_tvs_page.dart';
 import 'package:tv/presentation/pages/top_rated_tvs_page.dart';
 import 'package:tv/presentation/pages/tv_detail_page.dart';
+import 'package:tv/presentation/pages/season_page.dart';
 import 'package:tv/presentation/pages/watchlist_tvs_page.dart';
 
 import 'package:search/presentation/pages/search_page.dart';
@@ -56,7 +59,7 @@ import 'package:tv/presentation/bloc/tv_detail_watchlist/tv_detail_watchlist_blo
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  HttpSSLPinning.init();
+  await HttpSSLPinning.init();
   di.init();
   runApp(MyApp());
 }
@@ -153,6 +156,12 @@ class MyApp extends StatelessWidget {
               final id = settings.arguments as int;
               return MaterialPageRoute(
                 builder: (_) => TvDetailPage(id: id),
+                settings: settings,
+              );
+            case TvSeasonPage.routeName:
+              final list = settings.arguments as List;
+              return MaterialPageRoute(
+                builder: (_) => TvSeasonPage(list: list),
                 settings: settings,
               );
             case SearchPage.routeName:
