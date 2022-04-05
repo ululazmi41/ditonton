@@ -18,7 +18,6 @@ import 'package:movie/presentation/pages/home_movie_page.dart';
 import 'package:movie/presentation/pages/popular_movies_page.dart';
 import 'package:movie/presentation/pages/top_rated_movies_page.dart';
 import 'package:movie/presentation/pages/watchlist_movies_page.dart';
-import 'package:tv/data/models/tv_detail_model.dart';
 
 // Tv Pages
 import 'package:tv/presentation/pages/home_tv_page.dart';
